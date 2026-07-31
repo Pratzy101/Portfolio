@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prathit Shaandilya — Data Analyst / AI Systems</title>
+<meta name="description" content="Prathit Shaandilya — analyst and enterprise consultant transitioning into AI Engineering. Experience, projects, and contact.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --surface:#141414;
+    --surface-2:#1b1b1b;
+    --border:#272727;
+    --border-soft:#1d1d1d;
+    --text:#f4f4f2;
+    --text-dim:#8f8f8f;
+    --text-faint:#565656;
+    --white:#ffffff;
+    --maxw:920px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter', system-ui, sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased; cursor:none;
+  }
+
+  ::selection{ background:var(--white); color:var(--bg); }
+  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
+  .mono{ font-family:'JetBrains Mono', monospace; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
+    mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
+  }
+
+  /* custom cursor */
+  #cursor{
+    position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
+    border:1px solid var(--white); pointer-events:none; z-index:9999; opacity:0;
+    transform:translate(-50%,-50%); transition:width .2s ease, height .2s ease, background .2s ease, opacity .2s ease;
+    mix-blend-mode:difference;
+  }
+  #cursor.active{ opacity:1; }
+  #cursor.grow{ width:52px; height:52px; background:var(--white); }
+
+  /* fixed corner chrome */
+  .corner{
+    position:fixed; z-index:200; font-family:'JetBrains Mono', monospace;
+    font-size:11.5px; letter-spacing:0.06em; color:var(--text-dim);
+  }
+  .corner-tl{ top:28px; left:28px; }
+  .corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; }
+  .corner-tr{ top:28px; right:28px; display:flex; gap:26px; }
+  .corner-tr a{ text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .2s ease; }
+  .corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white); transition:width .25s ease; }
+  .corner-tr a:hover{ color:var(--white); }
+  .corner-tr a:hover::after{ width:100%; }
+  .corner-bl{ bottom:28px; left:28px; text-transform:uppercase; line-height:1.6; }
+  .corner-br{ bottom:28px; right:28px; display:flex; gap:20px; text-transform:uppercase; }
+  .corner-br a{ transition:color .2s ease; }
+  .corner-br a:hover{ color:var(--white); }
+
+  .mob-toggle{ display:none; }
+  .mob-menu{ display:none; }
+  @media (max-width:900px){
+    .corner-tr{ display:none; }
+    .mob-toggle{
+      display:block; position:fixed; top:26px; right:24px; z-index:210;
+      background:none; border:1px solid var(--border); border-radius:6px;
+      padding:8px 10px; color:var(--text);
+    }
+    .mob-menu{
+      position:fixed; inset:0; background:var(--bg); z-index:205;
+      display:none; flex-direction:column; align-items:flex-start; justify-content:center; gap:22px;
+      padding:0 40px; opacity:0; transition:opacity .3s ease;
+    }
+    .mob-menu.open{ display:flex; opacity:1; }
+    .mob-menu a{ font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; }
+    .corner-bl, .corner-br{ font-size:10.5px; }
+  }
+
+  section{ padding:120px 0; border-bottom:1px solid var(--border-soft); }
+  section:last-of-type{ border-bottom:none; }
+  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-bottom:16px; display:block; }
+  h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bottom:56px; }
+
+  .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+  /* HERO */
+  #home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:100px; border-bottom:1px solid var(--border-soft); }
+  .status-line{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim); border:1px solid var(--border); padding:6px 12px; border-radius:100px; margin-bottom:32px; width:fit-content; }
+  .status-dot{ width:6px; height:6px; border-radius:50%; background:#eaeaea; animation:pulse 2s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  .hero-name{ font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:18px; }
+  .hero-head{ font-size:clamp(44px,8.6vw,108px); font-weight:600; line-height:0.98; margin-bottom:28px; }
+  .hero-head .line{ display:block; }
+  .hero-head .dim{ color:var(--text-faint); }
+  .hero-sub{ max-width:560px; color:var(--text-dim); font-size:16px; margin-bottom:40px; }
+  .btn-row{ display:flex; flex-wrap:wrap; gap:12px; }
+  .btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:13px 22px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
+  .btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
+  .btn-primary:hover{ background:transparent; color:var(--white); }
+  .btn-ghost{ color:var(--text-dim); }
+  .btn-ghost:hover{ color:var(--white); border-color:var(--text-dim); }
+
+  /* MARQUEE */
+  .marquee-wrap{ border-bottom:1px solid var(--border-soft); overflow:hidden; padding:22px 0; }
+  .marquee{ display:flex; width:max-content; animation:scroll 26s linear infinite; }
+  .marquee span{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.08em; color:var(--text-faint); text-transform:uppercase; padding:0 28px; white-space:nowrap; }
+  .marquee span::after{ content:'/'; margin-left:28px; color:var(--border); }
+  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+  @media (prefers-reduced-motion:reduce){ .marquee{ animation:none; } }
+
+  /* EXPERIENCE — row list */
+  .xrow{ padding:34px 0; border-top:1px solid var(--border-soft); display:grid; grid-template-columns:120px 1fr; gap:24px; position:relative; }
+  .timeline > .xrow:first-child{ border-top:1px solid var(--border-soft); }
+  .xdate{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-faint); padding-top:6px; }
+  .xrole{ font-size:clamp(19px,2.4vw,24px); font-weight:600; margin-bottom:4px; transition:color .2s ease; }
+  .xplace{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
+  .xrow ul{ padding-left:18px; color:var(--text-dim); font-size:14.5px; }
+  .xrow li{ margin-bottom:8px; }
+  .xrow li:last-child{ margin-bottom:0; }
+  .xrow p.desc{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
+  .xrow:hover .xrole{ color:var(--white); }
+  .xrow:hover{ background:linear-gradient(90deg, rgba(255,255,255,0.015), transparent); }
+  @media (max-width:640px){ .xrow{ grid-template-columns:1fr; gap:8px; } }
+
+  /* PROJECTS — invert hover */
+  .proj-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
+  @media (max-width:640px){ .proj-grid{ grid-template-columns:1fr; } }
+  .pcard{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:220px; transition:background .28s ease, color .28s ease; position:relative; }
+  .pcard h3{ font-size:19px; font-weight:600; }
+  .pcard p{ color:var(--text-dim); font-size:14px; flex-grow:1; transition:color .28s ease; }
+  .tags{ display:flex; flex-wrap:wrap; gap:6px; }
+  .tag{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim); border:1px solid var(--border); padding:4px 9px; border-radius:100px; transition:border-color .28s ease, color .28s ease; }
+  .pcard.pending{ border-left:2px dashed var(--border); }
+  .pcard::after{ content:'↗'; position:absolute; top:28px; right:28px; color:var(--text-faint); font-size:16px; opacity:0; transform:translate(-4px,4px); transition:all .25s ease; }
+  .pcard:hover{ background:var(--white); color:var(--bg); }
+  .pcard:hover p{ color:#333; }
+  .pcard:hover .tag{ border-color:#999; color:#333; }
+  .pcard:hover::after{ opacity:1; transform:translate(0,0); color:var(--bg); }
+
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
+  @media (max-width:720px){ .about-grid{ grid-template-columns:1fr; } }
+  .about-bio p{ color:var(--text-dim); margin-bottom:16px; font-size:15.5px; }
+  .about-block{ margin-bottom:34px; }
+  .about-block:last-child{ margin-bottom:0; }
+  .about-block h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono', monospace; color:var(--text-faint); margin-bottom:14px; font-weight:400; }
+  .about-block ul{ list-style:none; color:var(--text-dim); font-size:14px; }
+  .about-block li{ margin-bottom:10px; padding-left:14px; position:relative; }
+  .about-block li::before{ content:'—'; position:absolute; left:0; color:var(--text-faint); }
+  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+
+  /* CONTACT */
+  .contact-lead{ color:var(--text-dim); max-width:520px; margin-bottom:44px; font-size:16px; }
+  .contact-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
+  .ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; transition:border-color .2s ease, background .2s ease; }
+  .ccard:hover{ border-color:var(--text-faint); background:var(--surface-2); }
+  .ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
+  .ccard-value{ font-size:14.5px; }
+  .arrow{ color:var(--text-faint); font-size:16px; }
+
+  footer{ padding:120px 0 140px; }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:12px; }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div id="cursor"></div>
+
+<!-- fixed corner chrome -->
+<div class="corner corner-tl"><a href="#home" class="brand">PRATHIT SHAANDILYA</a></div>
+<div class="corner corner-tr">
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</div>
+<div class="corner corner-bl">NOIDA, INDIA<br>IST</div>
+<div class="corner corner-br">
+  <a href="assets/Prathit_Shaandilya_Resume.pdf" download>Resume</a>
+  <a href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://github.com/Pratzy101" target="_blank" rel="noopener">GitHub</a>
+</div>
+
+<button class="mob-toggle" id="mobToggle" aria-label="Menu">☰</button>
+<div class="mob-menu" id="mobMenu">
+  <a href="#experience">Experience</a>
+  <a href="#projects">Projects</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HOME -->
+<section id="home">
+  <div class="wrap">
+    <div class="status-line"><span class="status-dot"></span>OPEN TO AI ENGINEERING / SOLUTIONS ARCHITECT ROLES</div>
+    <div class="hero-name">Prathit Shaandilya</div>
+    <h1 class="hero-head">
+      <span class="line">Data analyst</span>
+      <span class="line dim">turned AI</span>
+      <span class="line">systems builder.</span>
+    </h1>
+    <p class="hero-sub">Ex-KPMG, ex-Accenture enterprise consultant now building production-ready AI systems — agents, retrieval-augmented generation, and applied ML — after four years leading process automation and analytics delivery for telecom and manufacturing clients.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="assets/Prathit_Shaandilya_Resume.pdf" download>↓ Resume (PDF)</a>
+      <a class="btn btn-ghost" href="mailto:shaandilyaprathit@gmail.com">Email</a>
+      <a class="btn btn-ghost" href="#projects">See Work</a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>PYTHON</span><span>SQL</span><span>POWER BI</span><span>AI AGENTS</span><span>RAG</span><span>POWER PLATFORM</span><span>AZURE</span><span>AWS</span>
+    <span>PYTHON</span><span>SQL</span><span>POWER BI</span><span>AI AGENTS</span><span>RAG</span><span>POWER PLATFORM</span><span>AZURE</span><span>AWS</span>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="wrap">
+    <span class="eyebrow reveal">Work History</span>
+    <h2 class="section-title reveal">Experience</h2>
+
+    <div class="timeline">
+
+      <div class="xrow reveal">
+        <div class="xdate mono">OCT 2023<br>— PRESENT</div>
+        <div>
+          <div class="xrole">Career Break</div>
+          <div class="xplace">Noida, India</div>
+          <p class="desc">Stepped back for a planned period focused on personal wellbeing and graduate coursework. Now ready to re-engage full-time, available to start immediately.</p>
+        </div>
+      </div>
+
+      <div class="xrow reveal">
+        <div class="xdate mono">APR 2023<br>— OCT 2023</div>
+        <div>
+          <div class="xrole">Associate, Accenture</div>
+          <div class="xplace">Gurugram, India · Digital Transformation</div>
+          <ul>
+            <li>Selected for Accenture's Digital Transformation talent pool based on communication skills, client-facing experience, and consistent delivery.</li>
+            <li>Deployed to a leading U.S. telecom operator account as a one-stop-shop across Business and Federal customer segments.</li>
+            <li>Managed dispute resolution, credit analysis, upstream/cross-stream sales, retention, and account management across ~20 accounts daily.</li>
+            <li>Exceeded KPI targets: NPS 90%, CSAT 95%, Average Resolution Time 1,100 seconds.</li>
+            <li>Retained 92% of at-risk clients through real-time negotiation, safeguarding recurring revenue.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="xrow reveal">
+        <div class="xdate mono">OCT 2021<br>— FEB 2023</div>
+        <div>
+          <div class="xrole">Analyst, KPMG</div>
+          <div class="xplace">Gurugram, India · Governance, Risk & Compliance Services (GRCS), Telecom</div>
+          <ul>
+            <li>Partnered with a South African telecom operator to revitalize processes across MNS, CSO, and S&D streams — BPMN process maps in Visio at 8 processes/week.</li>
+            <li>Led a GAP Reporting Tool engagement for a Luxembourg-based steel manufacturer: designed the wireframe/UI in Figma, built in Power Apps + Power Automate under Agile delivery, and owned the database layer for 100+ internal users.</li>
+            <li>Authored 2–3 new Power BI dashboards weekly and maintained 4–5 legacy dashboards for senior management reporting.</li>
+            <li>Developed and led UAT for two in-house Power Platform tools — a Project Management Tool and an Engagement Feedback Tool — adopted by ~200 users.</li>
+            <li>Oversaw a 3-intern team building a cross-platform Flutter mobile application.</li>
+            <li>Trained 50+ participants on Microsoft Power Platform.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="xrow reveal">
+        <div class="xdate mono">SUMMER<br>INTERN</div>
+        <div>
+          <div class="xrole">Airports Authority of India</div>
+          <div class="xplace">New Delhi, India · Communication, Navigation & Surveillance (CNS)</div>
+          <p class="desc">Hands-on training at a newly built Air Traffic Services facility, working with underlying network infrastructure and RADAR systems.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <span class="eyebrow reveal">Selected Work</span>
+    <h2 class="section-title reveal">Projects</h2>
+
+    <div class="proj-grid reveal">
+
+      <div class="pcard pending">
+        <h3>AI/ML Portfolio Project</h3>
+        <p>In progress — an AI agent / RAG project being built as part of an active AI Engineering transition sprint. Details published here as it ships.</p>
+        <div class="tags"><span class="tag">In Progress</span><span class="tag">Agents</span><span class="tag">RAG</span></div>
+      </div>
+
+      <div class="pcard">
+        <h3>GAP Reporting Tool</h3>
+        <p>End-to-end internal reporting tool for a steel manufacturing client — Figma wireframes through to a deployed Power Apps/Power Automate solution serving 100+ users.</p>
+        <div class="tags"><span class="tag">Power Apps</span><span class="tag">Power Automate</span><span class="tag">Figma</span></div>
+      </div>
+
+      <div class="pcard">
+        <h3>Power BI Dashboard Suite</h3>
+        <p>Ongoing authorship and maintenance of 7–8 dashboards weekly for senior management reporting across a large telecom engagement.</p>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Reporting</span></div>
+      </div>
+
+      <div class="pcard">
+        <h3>Internal Power Platform Tools</h3>
+        <p>Project Management Tool and Engagement Feedback Tool, built on Power Platform and adopted by close to 200 internal users; led delivery and UAT.</p>
+        <div class="tags"><span class="tag">Power Platform</span><span class="tag">UAT</span></div>
+      </div>
+
+      <div class="pcard">
+        <h3>Quadcopter Drones</h3>
+        <p>B.Tech major project — designed, fabricated, and deployed two quadcopters using Arduino Uno and Arduino Mega flight controllers on open-source software.</p>
+        <div class="tags"><span class="tag">Arduino</span><span class="tag">Embedded</span><span class="tag">Hardware</span></div>
+      </div>
+
+      <div class="pcard">
+        <h3>Cross-Platform Mobile App</h3>
+        <p>Delivery oversight for a 3-intern team building a Flutter mobile application — quality, scoping, and shipping ownership.</p>
+        <div class="tags"><span class="tag">Flutter</span><span class="tag">Delivery Oversight</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <span class="eyebrow reveal">Background</span>
+    <h2 class="section-title reveal">About</h2>
+
+    <div class="about-grid">
+      <div class="about-bio reveal">
+        <p>I started in aeronautics — designing and flying quadcopters as a B.Tech major project — before moving into enterprise consulting at KPMG and Accenture, where I spent four years automating processes, building internal tools on Power Platform, and running Power BI reporting for telecom and manufacturing clients.</p>
+        <p>I'm now transitioning into AI Engineering: building production-ready systems with AI agents and retrieval-augmented generation, on the back of the same instinct that ran through the earlier work — take a messy process and turn it into something that reliably works.</p>
+        <p>Based in Noida, India. Open to AI Engineer, Solutions Architect, and Technical Consultant roles.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="about-block">
+          <h3>Education</h3>
+          <ul>
+            <li>MBA Coursework (Sem I), UPES — Jun 2025–Mar 2026. Discontinued after Sem I in favor of an M.Tech better aligned with long-term technical/data goals.</li>
+            <li>B.Tech, Aeronautics, Amity University — Jun 2017–Jul 2021.</li>
+          </ul>
+        </div>
+
+        <div class="about-block">
+          <h3>Certifications</h3>
+          <ul>
+            <li>AZ-900: Microsoft Azure Fundamentals — Microsoft</li>
+            <li>Six Sigma Green Belt — Amity University</li>
+            <li>Google Data Analytics Professional Certificate</li>
+            <li>Google Project Management Professional Certificate</li>
+            <li>Microsoft AI Business Professional Certificate</li>
+          </ul>
+        </div>
+
+        <div class="about-block">
+          <h3>Skills</h3>
+          <div class="skill-tags">
+            <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Power BI</span>
+            <span class="tag">Power Platform</span><span class="tag">Azure</span><span class="tag">AWS</span>
+            <span class="tag">AI Agents</span><span class="tag">RAG</span><span class="tag">Six Sigma</span><span class="tag">Agile/SCRUM</span>
+          </div>
+        </div>
+
+        <div class="about-block">
+          <h3>Languages</h3>
+          <ul>
+            <li>English — Fluent</li>
+            <li>Hindi — Fluent</li>
+            <li>French — Basic</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="wrap">
+    <span class="eyebrow reveal">Get in Touch</span>
+    <h2 class="section-title reveal">Contact</h2>
+    <p class="contact-lead reveal">Open to AI Engineer, Solutions Architect, and Technical Consultant roles. Reach out directly — I respond fast.</p>
+
+    <div class="contact-grid reveal">
+      <a class="ccard" href="mailto:shaandilyaprathit@gmail.com">
+        <div><span class="ccard-label">Email (primary)</span><span class="ccard-value">shaandilyaprathit@gmail.com</span></div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="ccard" href="mailto:shaandilyaprathit@icloud.com">
+        <div><span class="ccard-label">Email (alt)</span><span class="ccard-value">shaandilyaprathit@icloud.com</span></div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="ccard" href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">
+        <div><span class="ccard-label">LinkedIn</span><span class="ccard-value">/in/shaandilyaprathit</span></div>
+        <span class="arrow">→</span>
+      </a>
+      <a class="ccard" href="https://github.com/Pratzy101" target="_blank" rel="noopener">
+        <div><span class="ccard-label">GitHub</span><span class="ccard-value">/Pratzy101</span></div>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Prathit Shaandilya</span>
+    <span>Built with intent, not a template.</span>
+  </div>
+</footer>
+
+<script>
+  // custom cursor — unified across mouse, touch, and pen via Pointer Events
+  const cursor = document.getElementById('cursor');
+  window.addEventListener('pointermove', e => {
+    cursor.classList.add('active');
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  window.addEventListener('pointerdown', e => {
+    cursor.classList.add('active');
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+  document.querySelectorAll('a, button, .pcard').forEach(el => {
+    el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
+    el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
+  });
+
+  // magnetic buttons — desktop/hover-capable devices only, avoids fighting touch-scroll
+  if(window.matchMedia('(hover: hover)').matches){
+    document.querySelectorAll('.btn, .ccard').forEach(btn => {
+      btn.addEventListener('mousemove', e => {
+        const r = btn.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        btn.style.transform = `translate(${x*0.12}px, ${y*0.18}px)`;
+      });
+      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+    });
+  }
+
+  // mobile menu
+  const mobToggle = document.getElementById('mobToggle');
+  const mobMenu = document.getElementById('mobMenu');
+  mobToggle.addEventListener('click', () => mobMenu.classList.toggle('open'));
+  mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobMenu.classList.remove('open')));
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // active corner nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navA = document.querySelectorAll('.corner-tr a');
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        navA.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '-80px 0px -40% 0px' });
+  sections.forEach(s => navObserver.observe(s));
+</script>
+
+</body>
+</html>
