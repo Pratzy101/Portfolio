@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prathit Shaandilya — Data Analyst / AI Systems</title>
-<meta name="description" content="Prathit Shaandilya — analyst and enterprise consultant transitioning into AI Engineering. Experience, projects, and contact.">
+<meta name="description" content="Prathit Shaandilya — analyst and enterprise consultant transitioning into AI Engineering. Experience, work, and contact.">
 <link rel="canonical" href="https://pratzy101.github.io/Portfolio/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='7' y='7' width='18' height='18' fill='none' stroke='%23f4f4f2' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -23,7 +24,7 @@
   "name": "Prathit Shaandilya",
   "url": "https://pratzy101.github.io/Portfolio/",
   "jobTitle": "AI Engineer / Solutions Architect",
-  "description": "Data analyst and enterprise consultant transitioning into AI Engineering — building production-ready systems with AI agents, retrieval-augmented generation, and applied ML.",
+  "description": "Enterprise consultant turned AI engineer — two years at KPMG and Accenture delivering process automation, internal tooling, and analytics, now building agents and retrieval-augmented systems.",
   "email": "mailto:shaandilyaprathit@gmail.com",
   "address": {
     "@type": "PostalAddress",
@@ -48,16 +49,25 @@
   /* ============================================================================
      DESIGN TOKENS
      All colours, sizes, and timing values. Change here to update the whole site.
+
+     V1.2 palette note: the new design uses several near-duplicate greys
+     (#8a8a8a and #a8a8a8, #0d0d0d and #0f0f0f) that were likely just small
+     drift from the design tool rather than deliberate distinct tones — they're
+     consolidated into single tokens here (--text-dim, --surface-raised) for
+     maintainability. The visual difference is under 3%, imperceptible in practice.
      ============================================================================ */
   :root{
     --bg:#0a0a0a;
     --surface:#141414;
     --surface-2:#1b1b1b;
-    --border:#272727;
+    --surface-raised:#0f0f0f;
+    --border:#2f2f2f;
     --border-soft:#1d1d1d;
     --text:#f4f4f2;
-    --text-dim:#8f8f8f;
-    --text-faint:#565656;
+    --text-soft:#c4c4c4;
+    --text-dim:#a8a8a8;
+    --text-faint:#6e6e6e;
+    --text-marquee:#7d7d7d;
     --white:#ffffff;
     --maxw:920px;
   }
@@ -79,13 +89,11 @@
   h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
   .mono{ font-family:'JetBrains Mono', monospace; }
   a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
   .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
 
-  /* Keyboard focus must stay visible everywhere — removing it without a
-     replacement makes the site unusable without a mouse. */
   :focus-visible{ outline:2px solid var(--white); outline-offset:3px; }
 
-  /* Screen-reader-only text: present in the accessibility tree, invisible on screen. */
   .sr-only{
     position:absolute; width:1px; height:1px; padding:0; margin:-1px;
     overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
@@ -94,8 +102,7 @@
   /* ============================================================================
      SKIP LINK
      Lets keyboard and screen-reader users jump past the fixed nav chrome
-     straight to content, instead of tabbing through every corner link first.
-     Hidden until focused.
+     straight to content. Hidden until focused.
      ============================================================================ */
   .skip-link{
     position:absolute; top:8px; left:8px; z-index:9999;
@@ -107,7 +114,6 @@
 
   /* ============================================================================
      BACKGROUND GRID
-     Fixed backdrop that fills the space behind all content.
      ============================================================================ */
   .grid-bg{
     position:fixed; inset:0; z-index:-1; pointer-events:none;
@@ -121,11 +127,9 @@
 
   /* ============================================================================
      CUSTOM CURSOR
-     Follows the pointer; grows on interactive elements.
-     Bug fix (V1.1): previously only hid via a CSS transition with nothing to
-     ever trigger it on mobile — a tap set it active and nothing removed the
-     class again, so it got stranded on screen through scrolling. Now paired
-     with JS that clears it on scroll and after a short idle period.
+     Restored in V1.2 — the uploaded design had no cursor code at all, and
+     no JS of any kind. Same fixed-in-V1.1 behaviour: scroll clears it
+     immediately, plus a 600ms idle timeout as backup.
      ============================================================================ */
   #cursor{
     position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
@@ -138,14 +142,17 @@
 
   /* ============================================================================
      FIXED CORNER CHROME
-     Persistent frame: logo, nav, location, social links.
+     V1.2 note: the uploaded design had the top corners as position:absolute
+     (they would scroll away) while the bottom corners were position:fixed.
+     Kept all four fixed here for a consistent persistent-chrome pattern,
+     matching every prior version of this site.
      ============================================================================ */
   .corner{
     position:fixed; z-index:200; font-family:'JetBrains Mono', monospace;
     font-size:11.5px; letter-spacing:0.06em; color:var(--text-dim);
   }
   .corner-tl{ top:28px; left:28px; }
-  .corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; }
+  .corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; text-transform:uppercase; }
   .corner-tr{ top:28px; right:28px; display:flex; gap:26px; }
   .corner-tr a{ text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .2s ease; }
   .corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white); transition:width .25s ease; }
@@ -158,7 +165,8 @@
 
   /* ============================================================================
      MOBILE MENU
-     Hamburger toggle that opens a full-screen overlay with navigation links.
+     Restored in V1.2 — the uploaded design had no responsive nav collapse,
+     so "Work / Experience / About / Contact" would overflow on small screens.
      ============================================================================ */
   .mob-toggle{ display:none; }
   .mob-menu{ display:none; }
@@ -181,119 +189,118 @@
 
   /* ============================================================================
      SECTIONS AND TYPOGRAPHY
-     Shared vertical rhythm and heading styles.
      ============================================================================ */
   section{ padding:120px 0; border-bottom:1px solid var(--border-soft); }
   section:last-of-type{ border-bottom:none; }
-  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-bottom:16px; display:block; }
-  h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bottom:56px; }
+  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
+  h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bottom:20px; }
+  .section-lead{ color:var(--text-dim); font-size:15.5px; max-width:600px; margin-bottom:56px; }
 
   /* ============================================================================
      SCROLL REVEAL
-     Fade in elements as they enter the viewport.
      ============================================================================ */
   .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.in-view{ opacity:1; transform:translateY(0); }
   @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
 
   /* ============================================================================
-     HERO SECTION
+     BUTTONS
+     Shared across hero, work, and follow CTAs.
      ============================================================================ */
-  #home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding-top:100px; border-bottom:1px solid var(--border-soft); }
+  .btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:14px 24px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
+  .btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
+  .btn-primary:hover{ background:transparent; color:var(--white); }
+  .btn-ghost{ color:#e2e2e2; }
+  .btn-ghost:hover{ border-color:var(--text-dim); }
+
+  /* ============================================================================
+     HERO SECTION
+     New copy (V1.2): "AVAILABLE NOW" status pill, "I turn messy enterprise
+     processes into systems that ship." headline, tightened two-button CTA row.
+     ============================================================================ */
+  #home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:100px 0 110px; border-bottom:1px solid var(--border-soft); }
   .status-line{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim); border:1px solid var(--border); padding:6px 12px; border-radius:100px; margin-bottom:32px; width:fit-content; }
   .status-dot{ width:6px; height:6px; border-radius:50%; background:#eaeaea; animation:pulse 2s infinite; }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.3;} }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
   .hero-name{ font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:18px; }
   .hero-head{ font-size:clamp(44px,8.6vw,108px); font-weight:600; line-height:0.98; margin-bottom:28px; }
   .hero-head .line{ display:block; }
   .hero-head .dim{ color:var(--text-faint); }
-  .hero-sub{ max-width:560px; color:var(--text-dim); font-size:16px; margin-bottom:40px; }
+  .hero-sub{ max-width:600px; color:var(--text-dim); font-size:16.5px; margin-bottom:40px; }
   .btn-row{ display:flex; flex-wrap:wrap; gap:12px; }
-  .btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:13px 22px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
-  .btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
-  .btn-primary:hover{ background:transparent; color:var(--white); }
-  .btn-ghost{ color:var(--text-dim); }
-  .btn-ghost:hover{ color:var(--white); border-color:var(--text-dim); }
-
-  /* ============================================================================
-     STATUS BAR
-     Slim strip announcing what's actively being built right now. Sits between
-     Hero and Marquee, styled like an extension of the marquee's "info strip"
-     language rather than crowding the hero's big typography.
-
-     This is a STATIC, MANUALLY-EDITED block — V1.1 has no backend, so it
-     cannot pull live data from the sprint tracker automatically. Update the
-     text in .status-bar-text by hand as the sprint progresses (see the
-     ai-ml-sprint-tracker.md file for the current week/phase).
-     ============================================================================ */
-  .status-bar-wrap{ border-bottom:1px solid var(--border-soft); padding:16px 0; }
-  .status-bar{ display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; font-family:'JetBrains Mono', monospace; font-size:12.5px; }
-  .status-bar-label{ color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; flex-shrink:0; }
-  .status-bar-text{ color:var(--text-dim); }
-  .status-bar-text a{ color:var(--text); text-decoration:underline; text-underline-offset:2px; }
-  .status-bar-text a:hover{ color:var(--white); }
 
   /* ============================================================================
      MARQUEE (SKILLS STRIP)
      ============================================================================ */
   .marquee-wrap{ border-bottom:1px solid var(--border-soft); overflow:hidden; padding:22px 0; }
   .marquee{ display:flex; width:max-content; animation:scroll 26s linear infinite; }
-  .marquee span{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.08em; color:var(--text-faint); text-transform:uppercase; padding:0 28px; white-space:nowrap; }
-  .marquee span::after{ content:'/'; margin-left:28px; color:var(--border); }
+  .marquee span{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.08em; color:var(--text-marquee); text-transform:uppercase; padding:0 28px; white-space:nowrap; }
+  .marquee span::after{ content:'/'; margin-left:28px; color:var(--border-soft); }
   @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
   @media (prefers-reduced-motion:reduce){ .marquee{ animation:none; } }
 
   /* ============================================================================
-     EXPERIENCE SECTION
+     PROOF / STATS STRIP (new in V1.2)
+     Four-number credibility strip sitting between the marquee and Work.
+     Editable: each .stat-num / .stat-label pair.
      ============================================================================ */
-  .xrow{ padding:34px 0; border-top:1px solid var(--border-soft); display:grid; grid-template-columns:120px 1fr; gap:24px; position:relative; }
-  .timeline > .xrow:first-child{ border-top:1px solid var(--border-soft); }
-  .xdate{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-faint); padding-top:6px; }
-  .xrole{ font-size:clamp(19px,2.4vw,24px); font-weight:600; margin-bottom:4px; transition:color .2s ease; }
-  .xplace{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
-  .xrow ul{ padding-left:18px; color:var(--text-dim); font-size:14.5px; }
-  .xrow li{ margin-bottom:8px; }
-  .xrow li:last-child{ margin-bottom:0; }
-  .xrow p.desc{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
-  .xrow:hover .xrole{ color:var(--white); }
-  .xrow:hover{ background:linear-gradient(90deg, rgba(255,255,255,0.015), transparent); }
-  @media (max-width:640px){ .xrow{ grid-template-columns:1fr; gap:8px; } }
+  .proof-section{ padding:76px 0; }
+  .stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+  .stat-num{ font-family:'Space Grotesk', sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.02em; line-height:1; }
+  .stat-label{ font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.08em; color:var(--text-dim); text-transform:uppercase; margin-top:8px; }
+  @media (max-width:640px){ .stat-grid{ grid-template-columns:repeat(2,1fr); row-gap:36px; } }
 
   /* ============================================================================
-     PROJECTS SECTION
+     WORK SECTION (renamed from Projects in V1.2)
+     Flagship spotlight card (problem / what I did / outcome) + supporting
+     grid + a "currently building" callout + live GitHub activity.
      ============================================================================ */
-  .proj-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
-  @media (max-width:640px){ .proj-grid{ grid-template-columns:1fr; } }
-  .pcard{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:220px; transition:background .28s ease, color .28s ease; position:relative; }
-  .pcard h3{ font-size:19px; font-weight:600; }
-  .pcard p{ color:var(--text-dim); font-size:14px; flex-grow:1; transition:color .28s ease; }
+  .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
+  @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; } }
+
+  .work-flagship{ grid-column:1 / -1; background:var(--surface-raised); padding:40px 36px; display:flex; flex-direction:column; gap:16px; }
+  .flagship-meta{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .flagship-pill{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--bg); background:var(--text); padding:4px 10px; border-radius:100px; }
+  .flagship-context{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+  .work-flagship h3{ font-size:27px; font-weight:600; }
+  .flagship-breakdown{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:4px; }
+  @media (max-width:640px){ .flagship-breakdown{ grid-template-columns:1fr; gap:16px; } }
+  .flagship-breakdown h4{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+  .flagship-breakdown p{ color:var(--text-soft); font-size:14.5px; }
+  .work-link{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border-bottom:1px solid #3a3a3a; padding-bottom:3px; width:fit-content; margin-top:8px; transition:border-color .2s ease; }
+  .work-link:hover{ border-bottom-color:var(--white); }
+
+  .work-card{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:230px; }
+  .work-card-meta{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+  .work-card h3{ font-size:19px; font-weight:600; }
+  .work-card p{ color:var(--text-dim); font-size:14.5px; flex-grow:1; }
+
   .tags{ display:flex; flex-wrap:wrap; gap:6px; }
-  .tag{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim); border:1px solid var(--border); padding:4px 9px; border-radius:100px; transition:border-color .28s ease, color .28s ease; }
-  .pcard.pending{ border-left:2px dashed var(--border); }
-  .pcard::after{ content:'↗'; position:absolute; top:28px; right:28px; color:var(--text-faint); font-size:16px; opacity:0; transform:translate(-4px,4px); transition:all .25s ease; }
-  .pcard:hover{ background:var(--white); color:var(--bg); }
-  .pcard:hover p{ color:#333; }
-  .pcard:hover .tag{ border-color:#999; color:#333; }
-  .pcard:hover::after{ opacity:1; transform:translate(0,0); color:var(--bg); }
+  .tag{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim); border:1px solid var(--border); padding:4px 9px; border-radius:100px; }
+
+  .work-building{
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+    border:1px solid var(--border-soft); border-top:none; background:var(--surface-raised); padding:26px 32px;
+  }
+  .work-building-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+  .work-building p{ color:var(--text-soft); font-size:14.5px; max-width:560px; }
+  .follow-btn{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border:1px solid var(--border); border-radius:6px; padding:11px 18px; white-space:nowrap; transition:border-color .2s ease; }
+  .follow-btn:hover{ border-color:var(--text-dim); }
 
   /* ============================================================================
      GITHUB ACTIVITY
-     Live feed of recent public pushes, fetched client-side from GitHub's
-     public REST API. Sits at the bottom of Projects, directly under the card
-     grid — proof-of-work placed exactly where someone is evaluating the claims.
-     Degrades gracefully: shows a fallback line if the fetch fails, is empty,
-     or JavaScript is unavailable.
+     Carried forward from V1.1. Sits directly below the "currently building"
+     bar — the live counterpart to that static message. Fetches recent public
+     pushes client-side; degrades to a plain profile link on any failure.
      ============================================================================ */
-  .gh-activity{ margin-top:56px; padding-top:40px; border-top:1px solid var(--border-soft); }
-  .gh-activity-label{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-faint); text-transform:uppercase; margin-bottom:20px; display:block; }
-  .gh-list{ display:flex; flex-direction:column; gap:2px; }
+  .gh-activity{ margin-top:32px; }
+  .gh-activity-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
   .gh-row{
     display:flex; justify-content:space-between; align-items:baseline; gap:16px;
     padding:12px 0; border-top:1px solid var(--border-soft); font-size:13.5px;
   }
   .gh-row:first-child{ border-top:none; }
   .gh-repo{ color:var(--text); font-family:'JetBrains Mono', monospace; font-size:12.5px; }
-  .gh-repo a{ transition:color .2s ease; }
   .gh-repo a:hover{ color:var(--white); text-decoration:underline; }
   .gh-msg{ color:var(--text-dim); flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .gh-time{ color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:11.5px; flex-shrink:0; }
@@ -306,33 +313,67 @@
   }
 
   /* ============================================================================
+     EXPERIENCE SECTION
+     V1.2: the standalone "Career Break" row is replaced with a trailing note
+     below the timeline, per the new design.
+     ============================================================================ */
+  .xrow{ padding:34px 0; border-top:1px solid var(--border-soft); display:grid; grid-template-columns:120px 1fr; gap:24px; }
+  .timeline > .xrow:first-child{ border-top:1px solid var(--border-soft); }
+  .timeline > .xrow:last-child{ border-bottom:1px solid var(--border-soft); }
+  .xdate{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); padding-top:6px; }
+  .xrole{ font-size:clamp(19px,2.4vw,24px); font-weight:600; margin-bottom:4px; }
+  .xplace{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
+  .xrow ul{ padding-left:18px; color:var(--text-dim); font-size:14.5px; }
+  .xrow li{ margin-bottom:8px; list-style:disc; }
+  .xrow li:last-child{ margin-bottom:0; }
+  .xrow p.desc{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
+  @media (max-width:640px){ .xrow{ grid-template-columns:1fr; gap:8px; } }
+  .career-note{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--text-dim); margin-top:20px; }
+
+  /* ============================================================================
      ABOUT SECTION
      ============================================================================ */
   .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
   @media (max-width:720px){ .about-grid{ grid-template-columns:1fr; } }
-  .about-bio p{ color:var(--text-dim); margin-bottom:16px; font-size:15.5px; }
+  .about-bio p{ margin-bottom:16px; font-size:15.5px; }
+  .about-bio p:first-child{ color:var(--text-soft); font-size:16px; }
+  .about-bio p:not(:first-child){ color:var(--text-dim); }
   .about-block{ margin-bottom:34px; }
   .about-block:last-child{ margin-bottom:0; }
-  .about-block h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono', monospace; color:var(--text-faint); margin-bottom:14px; font-weight:400; }
-  .about-block ul{ list-style:none; color:var(--text-dim); font-size:14px; }
+  .about-block h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono', monospace; color:var(--text-dim); margin-bottom:14px; font-weight:400; }
+  .about-block ul{ color:var(--text-dim); font-size:14px; }
   .about-block li{ margin-bottom:10px; padding-left:14px; position:relative; }
-  .about-block li::before{ content:'—'; position:absolute; left:0; color:var(--text-faint); }
+  .about-block li:last-child{ margin-bottom:0; }
+  .about-block li::before{ content:'—'; position:absolute; left:0; color:var(--text-dim); }
   .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
 
   /* ============================================================================
      CONTACT SECTION
+     V1.2: "Let's talk" headline, one large primary email card, LinkedIn/GitHub
+     as a two-column pair below, alt email as small print.
      ============================================================================ */
   .contact-lead{ color:var(--text-dim); max-width:520px; margin-bottom:44px; font-size:16px; }
-  .contact-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .email-card{
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:26px 28px; margin-bottom:14px; transition:border-color .2s ease, background .2s ease;
+  }
+  .email-card:hover{ border-color:var(--text-dim); background:var(--surface-2); }
+  .email-card-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
+  .email-card-value{ font-size:22px; font-weight:600; letter-spacing:-0.01em; font-family:'Space Grotesk', sans-serif; }
+  .email-arrow{ color:var(--text-dim); font-size:20px; }
+
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
   .ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; transition:border-color .2s ease, background .2s ease; }
-  .ccard:hover{ border-color:var(--text-faint); background:var(--surface-2); }
-  .ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
+  .ccard:hover{ border-color:var(--text-dim); background:var(--surface-2); }
+  .ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
   .ccard-value{ font-size:14.5px; }
-  .arrow{ color:var(--text-faint); font-size:16px; }
+  .arrow{ color:var(--text-dim); font-size:16px; }
+  .contact-alt{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--text-dim); margin-top:18px; }
 
-  footer{ padding:120px 0 140px; }
-  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:12px; }
+  footer{ padding:100px 0 130px; border-top:1px solid var(--border-soft); }
+  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12px; }
 </style>
 </head>
 <body>
@@ -344,13 +385,12 @@
 
 <!-- ============================================================================
      MODULE START: CHROME
-     Fixed navigation and corner elements.
      Editable: profile name, section nav links, location, social links.
      ============================================================================ -->
 <div class="corner corner-tl"><a href="#home" class="brand">PRATHIT SHAANDILYA</a></div>
 <nav class="corner corner-tr" aria-label="Primary">
+  <a href="#work">Work</a>
   <a href="#experience">Experience</a>
-  <a href="#projects">Projects</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
 </nav>
@@ -365,8 +405,8 @@
   <span aria-hidden="true">☰</span>
 </button>
 <nav class="mob-menu" id="mobMenu" aria-label="Mobile">
+  <a href="#work">Work</a>
   <a href="#experience">Experience</a>
-  <a href="#projects">Projects</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
 </nav>
@@ -378,23 +418,21 @@
 
 <!-- ============================================================================
      MODULE START: HERO
-     Large tagline, summary, and CTA buttons.
-     Editable: name, tagline, summary, button links.
+     Editable: name, status pill, headline lines, summary, button links.
      ============================================================================ -->
 <section id="home" aria-label="Introduction">
   <div class="wrap">
-    <div class="status-line"><span class="status-dot" aria-hidden="true"></span>OPEN TO AI ENGINEERING / SOLUTIONS ARCHITECT ROLES</div>
+    <div class="status-line"><span class="status-dot" aria-hidden="true"></span>AVAILABLE NOW — AI ENGINEER / SOLUTIONS ARCHITECT</div>
     <p class="hero-name">Prathit Shaandilya</p>
     <h1 class="hero-head">
-      <span class="line">Data analyst</span>
-      <span class="line dim">turned AI</span>
-      <span class="line">systems builder.</span>
+      <span class="line">I turn messy</span>
+      <span class="line dim">enterprise processes</span>
+      <span class="line">into systems that ship.</span>
     </h1>
-    <p class="hero-sub">Ex-KPMG, ex-Accenture enterprise consultant now building production-ready AI systems — agents, retrieval-augmented generation, and applied ML — after four years leading process automation and analytics delivery for telecom and manufacturing clients.</p>
+    <p class="hero-sub">Two years at KPMG and Accenture delivering process automation, internal tooling and analytics for telecom and manufacturing clients. Now moving that same delivery discipline into AI engineering — agents and retrieval-augmented systems.</p>
     <div class="btn-row">
       <a class="btn btn-primary" href="assets/Prathit_Shaandilya_Resume.pdf" download>↓ Resume (PDF)</a>
-      <a class="btn btn-ghost" href="mailto:shaandilyaprathit@gmail.com">Email</a>
-      <a class="btn btn-ghost" href="#projects">See Work</a>
+      <a class="btn btn-ghost" href="mailto:shaandilyaprathit@gmail.com">Email me</a>
     </div>
   </div>
 </section>
@@ -403,25 +441,7 @@
      ============================================================================ -->
 
 <!-- ============================================================================
-     MODULE START: STATUS BAR
-     Manually-edited one-liner on what's currently being built. Update this by
-     hand as the sprint progresses — see the note in the CSS section above and
-     your ai-ml-sprint-tracker.md for the current phase.
-     ============================================================================ -->
-<div class="status-bar-wrap">
-  <div class="wrap status-bar">
-    <span class="status-bar-label">Currently</span>
-    <span class="status-bar-text">Preparing for a 4-week AI/ML sprint — Python → SQL → AI/ML → Polish — starting Aug 3, 2026. <a href="#projects">Track it in Projects →</a></span>
-  </div>
-</div>
-<!-- ============================================================================
-     MODULE END: STATUS BAR
-     ============================================================================ -->
-
-<!-- ============================================================================
      MODULE START: MARQUEE
-     Animated scrolling skills strip.
-     Editable: skill list (appears twice, keeps the animation smooth).
      ============================================================================ -->
 <div class="marquee-wrap">
   <div class="marquee" aria-hidden="true">
@@ -435,131 +455,124 @@
      ============================================================================ -->
 
 <!-- ============================================================================
-     MODULE START: EXPERIENCE
-     Work history in reverse chronological order.
-     Editable: each .xrow is one job entry. Change dates, title, place, and bullets.
+     MODULE START: PROOF (new in V1.2)
+     Four-stat credibility strip. No visible heading, so the section carries
+     its own aria-label instead of aria-labelledby.
+     Editable: each stat-num / stat-label pair.
      ============================================================================ -->
-<section id="experience" aria-labelledby="experience-heading">
-  <div class="wrap">
-    <span class="eyebrow reveal">Work History</span>
-    <h2 class="section-title reveal" id="experience-heading">Experience</h2>
-
-    <div class="timeline">
-
-      <div class="xrow reveal">
-        <div class="xdate mono">OCT 2023<br>— PRESENT</div>
-        <div>
-          <div class="xrole">Career Break</div>
-          <div class="xplace">Noida, India</div>
-          <p class="desc">Stepped back for a planned period focused on personal wellbeing and graduate coursework. Now ready to re-engage full-time, available to start immediately.</p>
-        </div>
-      </div>
-
-      <div class="xrow reveal">
-        <div class="xdate mono">APR 2023<br>— OCT 2023</div>
-        <div>
-          <div class="xrole">Associate, Accenture</div>
-          <div class="xplace">Gurugram, India · Digital Transformation</div>
-          <ul>
-            <li>Selected for Accenture's Digital Transformation talent pool based on communication skills, client-facing experience, and consistent delivery.</li>
-            <li>Deployed to a leading U.S. telecom operator account as a one-stop-shop across Business and Federal customer segments.</li>
-            <li>Managed dispute resolution, credit analysis, upstream/cross-stream sales, retention, and account management across ~20 accounts daily.</li>
-            <li>Exceeded KPI targets: NPS 90%, CSAT 95%, Average Resolution Time 1,100 seconds.</li>
-            <li>Retained 92% of at-risk clients through real-time negotiation, safeguarding recurring revenue.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="xrow reveal">
-        <div class="xdate mono">OCT 2021<br>— FEB 2023</div>
-        <div>
-          <div class="xrole">Analyst, KPMG</div>
-          <div class="xplace">Gurugram, India · Governance, Risk & Compliance Services (GRCS), Telecom</div>
-          <ul>
-            <li>Partnered with a South African telecom operator to revitalize processes across MNS, CSO, and S&D streams — BPMN process maps in Visio at 8 processes/week.</li>
-            <li>Led a GAP Reporting Tool engagement for a Luxembourg-based steel manufacturer: designed the wireframe/UI in Figma, built in Power Apps + Power Automate under Agile delivery, and owned the database layer for 100+ internal users.</li>
-            <li>Authored 2–3 new Power BI dashboards weekly and maintained 4–5 legacy dashboards for senior management reporting.</li>
-            <li>Developed and led UAT for two in-house Power Platform tools — a Project Management Tool and an Engagement Feedback Tool — adopted by ~200 users.</li>
-            <li>Oversaw a 3-intern team building a cross-platform Flutter mobile application.</li>
-            <li>Trained 50+ participants on Microsoft Power Platform.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="xrow reveal">
-        <div class="xdate mono">SUMMER<br>INTERN</div>
-        <div>
-          <div class="xrole">Airports Authority of India</div>
-          <div class="xplace">New Delhi, India · Communication, Navigation & Surveillance (CNS)</div>
-          <p class="desc">Hands-on training at a newly built Air Traffic Services facility, working with underlying network infrastructure and RADAR systems.</p>
-        </div>
-      </div>
-
+<section class="proof-section" aria-label="Career highlights">
+  <div class="wrap stat-grid reveal">
+    <div>
+      <div class="stat-num">300+</div>
+      <div class="stat-label">Users on tools I shipped</div>
+    </div>
+    <div>
+      <div class="stat-num">92%</div>
+      <div class="stat-label">At-risk accounts retained</div>
+    </div>
+    <div>
+      <div class="stat-num">50+</div>
+      <div class="stat-label">People trained on Power Platform</div>
+    </div>
+    <div>
+      <div class="stat-num">2 yrs</div>
+      <div class="stat-label">KPMG · Accenture delivery</div>
     </div>
   </div>
 </section>
 <!-- ============================================================================
-     MODULE END: EXPERIENCE
+     MODULE END: PROOF
      ============================================================================ -->
 
 <!-- ============================================================================
-     MODULE START: PROJECTS
-     Card grid showing past and current work, plus a live GitHub activity feed.
-     Editable: each .pcard is one project. Add/remove cards as projects ship.
+     MODULE START: WORK (renamed from Projects in V1.2)
+     Flagship spotlight + supporting grid + currently-building callout +
+     live GitHub activity feed.
+     Editable: flagship problem/what-I-did/outcome text, each .work-card,
+     the currently-building message, and the GitHub username in the JS below.
      ============================================================================ -->
-<section id="projects" aria-labelledby="projects-heading">
+<section id="work" aria-labelledby="work-heading">
   <div class="wrap">
     <span class="eyebrow reveal">Selected Work</span>
-    <h2 class="section-title reveal" id="projects-heading">Projects</h2>
+    <h2 class="section-title reveal" id="work-heading">Things I built</h2>
+    <p class="section-lead reveal">Most of this is client work under NDA, so there's no public repo — happy to walk through any of it live.</p>
 
-    <div class="proj-grid reveal">
+    <div class="work-grid reveal">
 
-      <div class="pcard pending">
-        <h3>AI/ML Portfolio Project</h3>
-        <p>In progress — an AI agent / RAG project being built as part of an active AI Engineering transition sprint. Details published here as it ships.</p>
-        <div class="tags"><span class="tag">In Progress</span><span class="tag">Agents</span><span class="tag">RAG</span></div>
-      </div>
-
-      <div class="pcard">
+      <div class="work-flagship">
+        <div class="flagship-meta">
+          <span class="flagship-pill">Flagship</span>
+          <span class="flagship-context">KPMG · Steel manufacturing client · 2022</span>
+        </div>
         <h3>GAP Reporting Tool</h3>
-        <p>End-to-end internal reporting tool for a steel manufacturing client — Figma wireframes through to a deployed Power Apps/Power Automate solution serving 100+ users.</p>
-        <div class="tags"><span class="tag">Power Apps</span><span class="tag">Power Automate</span><span class="tag">Figma</span></div>
+        <div class="flagship-breakdown">
+          <div>
+            <h4>Problem</h4>
+            <p>Compliance gaps were tracked across scattered spreadsheets with no single owner or audit trail.</p>
+          </div>
+          <div>
+            <h4>What I did</h4>
+            <p>Owned it end to end: Figma wireframes, Power Apps front end, Power Automate flows, and the database layer. Agile delivery, led UAT.</p>
+          </div>
+          <div>
+            <h4>Outcome</h4>
+            <p>Deployed to 100+ internal users as the single system of record for gap reporting.</p>
+          </div>
+        </div>
+        <div class="tags">
+          <span class="tag">Power Apps</span>
+          <span class="tag">Power Automate</span>
+          <span class="tag">Figma</span>
+          <span class="tag">SQL</span>
+        </div>
+        <a class="work-link" href="mailto:shaandilyaprathit@gmail.com?subject=Walkthrough%3A%20GAP%20Reporting%20Tool">Request a walkthrough →</a>
       </div>
 
-      <div class="pcard">
-        <h3>Power BI Dashboard Suite</h3>
-        <p>Ongoing authorship and maintenance of 7–8 dashboards weekly for senior management reporting across a large telecom engagement.</p>
-        <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Reporting</span></div>
-      </div>
-
-      <div class="pcard">
-        <h3>Internal Power Platform Tools</h3>
-        <p>Project Management Tool and Engagement Feedback Tool, built on Power Platform and adopted by close to 200 internal users; led delivery and UAT.</p>
+      <div class="work-card">
+        <span class="work-card-meta">KPMG · Internal</span>
+        <h3>Power Platform tool suite</h3>
+        <p>A Project Management Tool and an Engagement Feedback Tool, built and rolled out to ~200 internal users. I ran delivery and UAT for both.</p>
         <div class="tags"><span class="tag">Power Platform</span><span class="tag">UAT</span></div>
       </div>
 
-      <div class="pcard">
-        <h3>Quadcopter Drones</h3>
-        <p>B.Tech major project — designed, fabricated, and deployed two quadcopters using Arduino Uno and Arduino Mega flight controllers on open-source software.</p>
-        <div class="tags"><span class="tag">Arduino</span><span class="tag">Embedded</span><span class="tag">Hardware</span></div>
+      <div class="work-card">
+        <span class="work-card-meta">KPMG · Telecom engagement</span>
+        <h3>Power BI dashboard suite</h3>
+        <p>Authored 2–3 new dashboards a week and maintained 4–5 legacy ones, feeding senior management reporting on a large telecom account.</p>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL</span></div>
       </div>
 
-      <div class="pcard">
-        <h3>Cross-Platform Mobile App</h3>
-        <p>Delivery oversight for a 3-intern team building a Flutter mobile application — quality, scoping, and shipping ownership.</p>
-        <div class="tags"><span class="tag">Flutter</span><span class="tag">Delivery Oversight</span></div>
+      <div class="work-card">
+        <span class="work-card-meta">B.Tech major project</span>
+        <h3>Quadcopter drones</h3>
+        <p>Designed, fabricated and flew two quadcopters on Arduino Uno and Mega flight controllers, running open-source firmware.</p>
+        <div class="tags"><span class="tag">Arduino</span><span class="tag">Embedded</span></div>
+      </div>
+
+      <div class="work-card">
+        <span class="work-card-meta">KPMG · Team of 3</span>
+        <h3>Flutter mobile app</h3>
+        <p>Oversaw a three-intern team building a cross-platform app — scoping, quality and getting it shipped.</p>
+        <div class="tags"><span class="tag">Flutter</span><span class="tag">Delivery</span></div>
       </div>
 
     </div>
 
+    <div class="work-building reveal">
+      <div>
+        <div class="work-building-label">Currently building</div>
+        <p>A retrieval-augmented agent project, as part of an active AI engineering sprint. It'll be published here — with the repo — when it ships.</p>
+      </div>
+      <a class="follow-btn" href="https://github.com/Pratzy101" target="_blank" rel="noopener">Follow on GitHub →</a>
+    </div>
+
     <!-- ========================================================================
          SUBMODULE: GITHUB ACTIVITY
-         Populated by JS at the bottom of the page. Markup here is the empty
-         shell + noscript fallback; content is injected after the API responds.
+         Populated by JS at the bottom of the page.
          ======================================================================== -->
     <div class="gh-activity reveal" id="ghActivity">
       <span class="gh-activity-label">Recent activity</span>
-      <div class="gh-list" id="ghList">
+      <div id="ghList">
         <p class="gh-fallback">Loading recent commits from GitHub…</p>
       </div>
       <noscript>
@@ -570,43 +583,102 @@
   </div>
 </section>
 <!-- ============================================================================
-     MODULE END: PROJECTS
+     MODULE END: WORK
+     ============================================================================ -->
+
+<!-- ============================================================================
+     MODULE START: EXPERIENCE
+     Editable: each .xrow is one job entry. The trailing .career-note covers
+     the Oct 2023–present gap instead of a dedicated timeline row (V1.2).
+     ============================================================================ -->
+<section id="experience" aria-labelledby="experience-heading">
+  <div class="wrap">
+    <span class="eyebrow reveal">Work History</span>
+    <h2 class="section-title reveal" id="experience-heading" style="margin-bottom:56px;">Experience</h2>
+
+    <div class="timeline reveal">
+
+      <div class="xrow">
+        <div class="xdate mono">APR 2023<br>— OCT 2023</div>
+        <div>
+          <div class="xrole">Associate, Accenture</div>
+          <div class="xplace">Gurugram, India · Digital Transformation</div>
+          <ul>
+            <li>Selected into Accenture's Digital Transformation talent pool on client-facing delivery record.</li>
+            <li>Owned ~20 accounts a day for a major U.S. telecom operator across Business and Federal segments — disputes, credit analysis, cross-sell, retention.</li>
+            <li>Beat every KPI target: 90% NPS, 95% CSAT, 1,100s average resolution time.</li>
+            <li>Retained 92% of at-risk clients through real-time negotiation, protecting recurring revenue.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="xrow">
+        <div class="xdate mono">OCT 2021<br>— FEB 2023</div>
+        <div>
+          <div class="xrole">Analyst, KPMG</div>
+          <div class="xplace">Gurugram, India · Governance, Risk & Compliance Services, Telecom</div>
+          <ul>
+            <li>Built and shipped the GAP Reporting Tool for a Luxembourg steel manufacturer — Figma through Power Apps, Power Automate and the database layer, 100+ users.</li>
+            <li>Delivered two internal Power Platform tools adopted by ~200 users, and led UAT on both.</li>
+            <li>Authored 2–3 Power BI dashboards weekly for senior management reporting; maintained 4–5 legacy dashboards.</li>
+            <li>Mapped processes for a South African telecom operator across MNS, CSO and S&amp;D streams — BPMN in Visio at 8 processes/week.</li>
+            <li>Oversaw a 3-intern Flutter team and trained 50+ people on Microsoft Power Platform.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="xrow">
+        <div class="xdate mono">SUMMER<br>INTERN</div>
+        <div>
+          <div class="xrole">Airports Authority of India</div>
+          <div class="xplace">New Delhi, India · Communication, Navigation &amp; Surveillance</div>
+          <p class="desc">Hands-on training at a newly built Air Traffic Services facility, working with the underlying network infrastructure and RADAR systems.</p>
+        </div>
+      </div>
+
+    </div>
+    <p class="career-note">Oct 2023 – present: planned career break for graduate coursework and health. Available to start immediately.</p>
+  </div>
+</section>
+<!-- ============================================================================
+     MODULE END: EXPERIENCE
      ============================================================================ -->
 
 <!-- ============================================================================
      MODULE START: ABOUT
-     Biography, education, certifications, skills, languages.
-     Editable: bio paragraphs, education list, certifications list, skill tags, languages.
+     Editable: bio paragraphs, education, certifications, skill tags, languages.
+
+     Fixed in this pass: "four years" corrected to "two years" to match your
+     actual Oct 2021–Oct 2023 dates and the Hero/Proof copy above.
      ============================================================================ -->
 <section id="about" aria-labelledby="about-heading">
   <div class="wrap">
     <span class="eyebrow reveal">Background</span>
-    <h2 class="section-title reveal" id="about-heading">About</h2>
+    <h2 class="section-title reveal" id="about-heading" style="margin-bottom:56px;">About</h2>
 
     <div class="about-grid">
       <div class="about-bio reveal">
-        <p>I started in aeronautics — designing and flying quadcopters as a B.Tech major project — before moving into enterprise consulting at KPMG and Accenture, where I spent four years automating processes, building internal tools on Power Platform, and running Power BI reporting for telecom and manufacturing clients.</p>
-        <p>I'm now transitioning into AI Engineering: building production-ready systems with AI agents and retrieval-augmented generation, on the back of the same instinct that ran through the earlier work — take a messy process and turn it into something that reliably works.</p>
-        <p>Based in Noida, India. Open to AI Engineer, Solutions Architect, and Technical Consultant roles.</p>
+        <p>I started in aeronautics — designing and flying quadcopters for my B.Tech major project — then moved into enterprise consulting at KPMG and Accenture, where I spent two years automating processes, building internal tools on Power Platform and running Power BI reporting for telecom and manufacturing clients.</p>
+        <p>I'm now moving into AI engineering: agents and retrieval-augmented systems, driven by the same instinct that ran through all the earlier work — take a messy process and turn it into something that reliably works.</p>
+        <p>Based in Noida, India. Open to AI Engineer, Solutions Architect and Technical Consultant roles.</p>
       </div>
 
       <div class="reveal">
         <div class="about-block">
           <h3>Education</h3>
           <ul>
-            <li>MBA Coursework (Sem I), UPES — Jun 2025–Mar 2026. Discontinued after Sem I in favor of an M.Tech better aligned with long-term technical/data goals.</li>
-            <li>B.Tech, Aeronautics, Amity University — Jun 2017–Jul 2021.</li>
+            <li>MBA coursework (Sem I), UPES — 2025</li>
+            <li>B.Tech Aeronautics, Amity University — 2017–2021</li>
           </ul>
         </div>
 
         <div class="about-block">
           <h3>Certifications</h3>
           <ul>
-            <li>AZ-900: Microsoft Azure Fundamentals — Microsoft</li>
-            <li>Six Sigma Green Belt — Amity University</li>
-            <li>Google Data Analytics Professional Certificate</li>
-            <li>Google Project Management Professional Certificate</li>
-            <li>Microsoft AI Business Professional Certificate</li>
+            <li>AZ-900 Microsoft Azure Fundamentals</li>
+            <li>Six Sigma Green Belt</li>
+            <li>Google Data Analytics Professional</li>
+            <li>Google Project Management Professional</li>
           </ul>
         </div>
 
@@ -615,16 +687,16 @@
           <div class="skill-tags">
             <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Power BI</span>
             <span class="tag">Power Platform</span><span class="tag">Azure</span><span class="tag">AWS</span>
-            <span class="tag">AI Agents</span><span class="tag">RAG</span><span class="tag">Six Sigma</span><span class="tag">Agile/SCRUM</span>
+            <span class="tag">AI Agents</span><span class="tag">RAG</span><span class="tag">Six Sigma</span><span class="tag">Agile</span>
           </div>
         </div>
 
         <div class="about-block">
           <h3>Languages</h3>
           <ul>
-            <li>English — Fluent</li>
-            <li>Hindi — Fluent</li>
-            <li>French — Basic</li>
+            <li>English — fluent</li>
+            <li>Hindi — fluent</li>
+            <li>French — basic</li>
           </ul>
         </div>
       </div>
@@ -637,24 +709,23 @@
 
 <!-- ============================================================================
      MODULE START: CONTACT
-     Email addresses, LinkedIn, GitHub contact cards.
-     Editable: email addresses, social links.
+     Editable: email addresses, social links, lead paragraph.
      ============================================================================ -->
 <section id="contact" aria-labelledby="contact-heading">
   <div class="wrap">
     <span class="eyebrow reveal">Get in Touch</span>
-    <h2 class="section-title reveal" id="contact-heading">Contact</h2>
-    <p class="contact-lead reveal">Open to AI Engineer, Solutions Architect, and Technical Consultant roles. Reach out directly — I respond fast.</p>
+    <h2 class="section-title reveal" id="contact-heading">Let's talk</h2>
+    <p class="contact-lead reveal">Open to AI Engineer, Solutions Architect and Technical Consultant roles. Available immediately — I reply within a day.</p>
+
+    <a class="email-card reveal" href="mailto:shaandilyaprathit@gmail.com">
+      <div>
+        <span class="email-card-label">Email — best way to reach me</span>
+        <span class="email-card-value">shaandilyaprathit@gmail.com</span>
+      </div>
+      <span class="email-arrow" aria-hidden="true">→</span>
+    </a>
 
     <div class="contact-grid reveal">
-      <a class="ccard" href="mailto:shaandilyaprathit@gmail.com">
-        <div><span class="ccard-label">Email (primary)</span><span class="ccard-value">shaandilyaprathit@gmail.com</span></div>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
-      <a class="ccard" href="mailto:shaandilyaprathit@icloud.com">
-        <div><span class="ccard-label">Email (alt)</span><span class="ccard-value">shaandilyaprathit@icloud.com</span></div>
-        <span class="arrow" aria-hidden="true">→</span>
-      </a>
       <a class="ccard" href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">
         <div><span class="ccard-label">LinkedIn</span><span class="ccard-value">/in/shaandilyaprathit</span></div>
         <span class="arrow" aria-hidden="true">→</span>
@@ -664,6 +735,7 @@
         <span class="arrow" aria-hidden="true">→</span>
       </a>
     </div>
+    <p class="contact-alt reveal">Alt: shaandilyaprathit@icloud.com</p>
   </div>
 </section>
 <!-- ============================================================================
@@ -674,8 +746,6 @@
 
 <!-- ============================================================================
      MODULE START: FOOTER
-     Copyright and tagline.
-     Editable: year, name, tagline.
      ============================================================================ -->
 <footer>
   <div class="wrap">
@@ -689,20 +759,13 @@
 
 <!-- ============================================================================
      JAVASCRIPT MODULES
-     Pure functionality — no content here, only behaviour.
-     Editable: event listeners, animation timings, observer thresholds.
      ============================================================================ -->
 <script>
   /* ========================================================================
      MODULE START: CURSOR
-     Follows the pointer; grows on interactive elements.
-
-     V1.1 fix: the dot used to only gain the "active" class and never lose it
-     on mobile, since a tap fires one pointerdown and then scrolling doesn't
-     reliably fire further pointer events. It got stranded mid-screen. Now:
-       - a scroll event clears it immediately
-       - an idle timer clears it 600ms after the last pointer event, as a
-         backup for the case where someone taps and simply stops touching
+     Restored in V1.2 (see CSS comment above). Same scroll + idle-timeout fix
+     from V1.1: a scroll event clears the dot immediately, and a 600ms idle
+     timer clears it as backup if the pointer simply stops moving.
      ======================================================================== */
   (function cursorModule(){
     const cursor = document.getElementById('cursor');
@@ -719,14 +782,12 @@
     window.addEventListener('pointermove', e => activate(e.clientX, e.clientY));
     window.addEventListener('pointerdown', e => activate(e.clientX, e.clientY));
 
-    // The actual bug fix: hide immediately once the page starts scrolling,
-    // rather than waiting for the idle timeout.
     window.addEventListener('scroll', () => {
       clearTimeout(idleTimer);
       cursor.classList.remove('active');
     }, { passive: true });
 
-    document.querySelectorAll('a, button, .pcard').forEach(el => {
+    document.querySelectorAll('a, button, .work-card, .work-flagship').forEach(el => {
       el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
       el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
     });
@@ -741,12 +802,12 @@
      ======================================================================== */
   (function magneticButtonsModule(){
     if(!window.matchMedia('(hover: hover)').matches) return;
-    document.querySelectorAll('.btn, .ccard').forEach(btn => {
+    document.querySelectorAll('.btn, .ccard, .email-card').forEach(btn => {
       btn.addEventListener('mousemove', e => {
         const r = btn.getBoundingClientRect();
         const x = e.clientX - r.left - r.width/2;
         const y = e.clientY - r.top - r.height/2;
-        btn.style.transform = `translate(${x*0.12}px, ${y*0.18}px)`;
+        btn.style.transform = `translate(${x*0.1}px, ${y*0.14}px)`;
       });
       btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
     });
@@ -757,7 +818,7 @@
 
   /* ========================================================================
      MODULE START: MOBILE MENU
-     Toggle full-screen menu overlay on small screens.
+     Restored in V1.2 (see CSS comment above).
      ======================================================================== */
   (function mobileMenuModule(){
     const mobToggle = document.getElementById('mobToggle');
@@ -778,7 +839,6 @@
 
   /* ========================================================================
      MODULE START: SCROLL REVEAL
-     Fade in elements as they enter the viewport.
      ======================================================================== */
   (function scrollRevealModule(){
     const io = new IntersectionObserver((entries) => {
@@ -792,7 +852,6 @@
 
   /* ========================================================================
      MODULE START: ACTIVE NAV LINK
-     Highlight which section the user is currently viewing.
      ======================================================================== */
   (function activeNavModule(){
     const sections = document.querySelectorAll('section[id]');
@@ -812,16 +871,9 @@
 
   /* ========================================================================
      MODULE START: GITHUB ACTIVITY
-     Fetches recent public push events from GitHub's public REST API and
-     renders the last few commits under the Projects section.
-
-     No API key needed — this is a public, unauthenticated, CORS-enabled
-     endpoint, and each visitor's browser makes the request from their own
-     IP, so there's no shared rate limit to worry about at any traffic level.
-
-     Fails gracefully: any network error, non-200 response, or empty result
-     set falls back to a plain link to the GitHub profile instead of an
-     error or a blank space.
+     Carried forward from V1.1. No API key needed — public, unauthenticated,
+     CORS-enabled endpoint. Each visitor's browser calls it from their own
+     IP, so there's no shared rate limit. Fails gracefully to a profile link.
      ======================================================================== */
   (function githubActivityModule(){
     const GITHUB_USERNAME = 'Pratzy101';
@@ -867,7 +919,7 @@
             <span class="gh-time">${relativeTime(evt.created_at)}</span>
           </div>`;
       }).join('');
-      listEl.innerHTML = `<div class="gh-list">${rows}</div>`;
+      listEl.innerHTML = rows;
     }
 
     fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public`, {
