@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Page not found — Prathit Shaandilya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a; --text:#f4f4f2; --text-dim:#8f8f8f; --text-faint:#565656;
+    --border:#272727; --white:#ffffff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter', system-ui, sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:40px 24px; line-height:1.6;
+  }
+  .grid-bg{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+    background-size:48px 48px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 50%, black 0%, transparent 70%);
+    mask-image:radial-gradient(ellipse 80% 55% at 50% 50%, black 0%, transparent 70%);
+  }
+  .code{
+    font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--text-faint); margin-bottom:20px;
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif; font-weight:700; letter-spacing:-0.02em;
+    font-size:clamp(32px,6vw,56px); margin-bottom:16px;
+  }
+  p{ color:var(--text-dim); max-width:420px; margin-bottom:36px; font-size:15.5px; }
+  .btn{
+    font-family:'JetBrains Mono', monospace; font-size:13px; padding:13px 24px;
+    border-radius:6px; border:1px solid var(--white); background:var(--white); color:var(--bg);
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:all .2s ease;
+  }
+  .btn:hover{ background:transparent; color:var(--white); }
+</style>
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <p class="code">404 / not found</p>
+  <h1>That page doesn't exist.</h1>
+  <p>The link might be outdated, or the page moved. Head back to the homepage to find what you're looking for.</p>
+  <!--
+    Absolute path, not relative: this is a GitHub Pages PROJECT site (repo
+    named "Portfolio"), so it's served from /Portfolio/, not the domain root.
+    If the repo is ever renamed, update this href to match.
+  -->
+  <a class="btn" href="/Portfolio/">← Back to home</a>
+</body>
+</html>
