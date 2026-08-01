@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAP Reporting Tool — Prathit Shaandilya</title>
+<meta name="description" content="Compliance gap register for a Luxembourg steel manufacturer: Figma through Power Apps, Power Automate and the data layer, deployed to 100+ users.">
+<link rel="canonical" href="https://pratzy101.github.io/Portfolio/work/gap-reporting-tool/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='7' y='7' width='18' height='18' fill='none' stroke='%23f4f4f2' stroke-width='2'/%3E%3C/svg%3E">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Prathit Shaandilya">
+<meta property="og:title" content="GAP Reporting Tool — case study">
+<meta property="og:description" content="From scattered spreadsheets to a single system of record with a real audit trail, for 100+ users.">
+<meta property="og:url" content="https://pratzy101.github.io/Portfolio/work/gap-reporting-tool/">
+<meta property="og:image" content="https://pratzy101.github.io/Portfolio/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GAP Reporting Tool — case study">
+<meta name="twitter:description" content="From scattered spreadsheets to a single system of record with a real audit trail, for 100+ users.">
+<meta name="twitter:image" content="https://pratzy101.github.io/Portfolio/assets/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="grid-bg" aria-hidden="true"></div>
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- ============================================================================
+     MODULE START: CHROME
+     Identical to the homepage except that the section links are absolute to
+     the homepage rather than same-page anchors.
+     ============================================================================ -->
+<div class="corner corner-tl"><a href="../../index.html" class="brand">PRATHIT SHAANDILYA</a></div>
+<nav class="corner corner-tr" aria-label="Primary">
+  <a href="../../index.html#work">Work</a>
+  <a href="../../log.html">Log</a>
+  <a href="../../index.html#experience">Experience</a>
+  <a href="../../index.html#about">About</a>
+  <a href="../../index.html#contact">Contact</a>
+</nav>
+<div class="corner corner-bl">NOIDA, INDIA<br>IST</div>
+<div class="corner corner-br">
+  <a href="../../assets/Prathit_Shaandilya_Resume.pdf" download>Resume</a>
+  <a href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://github.com/Pratzy101" target="_blank" rel="noopener">GitHub</a>
+</div>
+
+<button class="mob-toggle" id="mobToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobMenu">
+  <span aria-hidden="true">☰</span>
+</button>
+<nav class="mob-menu" id="mobMenu" aria-label="Mobile">
+  <a href="../../index.html#work">Work</a>
+  <a href="../../log.html">Log</a>
+  <a href="../../index.html#experience">Experience</a>
+  <a href="../../index.html#about">About</a>
+  <a href="../../index.html#contact">Contact</a>
+</nav>
+<!-- ============================================================================
+     MODULE END: CHROME
+     ============================================================================ -->
+
+<main id="main-content" class="subpage-main">
+<div class="wrap">
+
+<!-- ============================================================================
+     >>> VERIFY BEFORE PUSHING <<<
+     Drafted from what already appears on your homepage and CV. These claims are
+     yours and already public:
+       · Luxembourg-based steel manufacturing client, KPMG GRCS
+       · Figma wireframes -> Power Apps -> Power Automate, you owned the DB layer
+       · Agile delivery, you led UAT
+       · 100+ internal users; scattered spreadsheets with no owner or audit trail
+
+     These are INFERRED and need your confirmation or correction:
+       · The three named Power Apps screens (register / form / status view)
+       · The three named flows (routing / approval / reminders)
+       · The three named tables (gaps / owners+actions / audit)
+       · Everything in CONSTRAINTS
+       · Everything in WHAT I'D DO DIFFERENTLY
+     Two .tbd blocks below mark the spots I could not infer at all.
+     Delete this comment once the page is true.
+     ============================================================================ -->
+
+<a class="back-link" href="../../index.html#work"><span aria-hidden="true">←</span> Work</a>
+
+<div class="page-head">
+  <div class="flagship-meta">
+    <span class="flagship-pill">Flagship</span>
+    <span class="flagship-context">KPMG · Steel manufacturing client · 2022</span>
+  </div>
+  <h1 class="page-title">GAP Reporting Tool</h1>
+  <p class="page-lead">A compliance gap register for a Luxembourg steel manufacturer, taken from
+     scattered spreadsheets to a single system of record used by more than a hundred people.</p>
+
+  <div class="fact-strip">
+    <div>
+      <div class="fact-label">Role</div>
+      <div class="fact-value">Analyst — design, build, data layer, UAT</div>
+    </div>
+    <div>
+      <div class="fact-label">Client</div>
+      <div class="fact-value">Steel manufacturer, Luxembourg</div>
+    </div>
+    <div>
+      <div class="fact-label">Delivery</div>
+      <div class="fact-value">Agile, KPMG GRCS</div>
+    </div>
+    <div>
+      <div class="fact-label">Stack</div>
+      <div class="fact-value">Power Apps, Power Automate, Power BI, Figma</div>
+    </div>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">Context</div>
+  <div class="case-body">
+    <p>KPMG's Governance, Risk &amp; Compliance practice ran the engagement. A compliance
+       gap, in this setting, is any place where a documented process and the process
+       actually being followed have come apart — and every one of them has to be recorded,
+       assigned to somebody, worked, and closed, with evidence that it happened.</p>
+    <p>The client had the discipline. What they did not have was anywhere for it to live.</p>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">Problem</div>
+  <div class="case-body">
+    <p>Gaps were tracked across scattered spreadsheets. That produced three failures that
+       compounded each other:</p>
+    <ul>
+      <li><strong>No single owner.</strong> A gap could sit in two workbooks with two different
+          people each assuming the other had it.</li>
+      <li><strong>No audit trail.</strong> Spreadsheets record the current state, not how it got
+          there. In a compliance context that is the part that matters — an auditor asks when a
+          gap was raised, who accepted it, and what changed since.</li>
+      <li><strong>No reliable rollup.</strong> Management reporting meant someone manually
+          reconciling workbooks, so the number was always slightly wrong and always late.</li>
+    </ul>
+    <p><br>The spreadsheets were not the root problem. The absence of a system of record was.</p>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">Constraints</div>
+  <div class="case-body">
+    <p>The shape of the solution was largely set before any design work started:</p>
+    <ul>
+      <li><strong>Microsoft-only estate.</strong> The client was already on Microsoft 365, which
+          made Power Platform the path of least resistance for both licensing and IT approval.</li>
+      <li><strong>Had to survive handover.</strong> Whatever got built would be maintained by the
+          client after the engagement closed, by people who are not developers. That ruled out
+          anything needing a build pipeline.</li>
+      <li><strong>Audit trail was non-negotiable.</strong> Not a feature request — the reason the
+          tool existed.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">Architecture</div>
+  <div class="case-body">
+    <div class="diagram-wrap">
+  <svg viewBox="0 0 820 404" role="img" aria-labelledby="gap-diagram-title gap-diagram-desc">
+    <title id="gap-diagram-title">GAP Reporting Tool architecture</title>
+    <desc id="gap-diagram-desc">Five tiers: internal users at the top, a Power Apps
+      canvas app, Power Automate flows, the database layer, and Power BI reporting
+      at the bottom. Each tier feeds the one below it.</desc>
+
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3"
+              orient="auto" markerUnits="strokeWidth">
+        <path d="M0,0 L0,6 L6,3 z" class="dg-arrow"/>
+      </marker>
+    </defs>
+
+    <!-- TIER 1 — USERS -->
+    <text x="0" y="43" class="dg-tier">USERS</text>
+    <rect x="100" y="16" width="700" height="46" rx="3" class="dg-box-accent"/>
+    <text x="450" y="44" class="dg-label-invert" text-anchor="middle">100+ internal users — compliance leads, process owners, reviewers</text>
+    <line x1="450" y1="62" x2="450" y2="80" class="dg-line" marker-end="url(#arrowhead)"/>
+
+    <!-- TIER 2 — INTERFACE -->
+    <text x="0" y="120" class="dg-tier">INTERFACE</text>
+    <rect x="100" y="84" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="210" y="112" class="dg-label" text-anchor="middle">Gap register</text>
+    <text x="210" y="130" class="dg-sub" text-anchor="middle">searchable list, filters</text>
+    <rect x="340" y="84" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="450" y="112" class="dg-label" text-anchor="middle">Submission form</text>
+    <text x="450" y="130" class="dg-sub" text-anchor="middle">raise and edit a gap</text>
+    <rect x="580" y="84" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="690" y="112" class="dg-label" text-anchor="middle">Status view</text>
+    <text x="690" y="130" class="dg-sub" text-anchor="middle">owner, due date, state</text>
+    <text x="820" y="120" class="dg-sub" text-anchor="end"></text>
+    <line x1="450" y1="148" x2="450" y2="166" class="dg-line" marker-end="url(#arrowhead)"/>
+
+    <!-- TIER 3 — AUTOMATION -->
+    <text x="0" y="206" class="dg-tier">LOGIC</text>
+    <rect x="100" y="170" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="210" y="198" class="dg-label" text-anchor="middle">Routing</text>
+    <text x="210" y="216" class="dg-sub" text-anchor="middle">assign gap to an owner</text>
+    <rect x="340" y="170" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="450" y="198" class="dg-label" text-anchor="middle">Approval chain</text>
+    <text x="450" y="216" class="dg-sub" text-anchor="middle">review and sign-off steps</text>
+    <rect x="580" y="170" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="690" y="198" class="dg-label" text-anchor="middle">Reminders</text>
+    <text x="690" y="216" class="dg-sub" text-anchor="middle">scheduled, on overdue</text>
+    <line x1="450" y1="234" x2="450" y2="252" class="dg-line" marker-end="url(#arrowhead)"/>
+
+    <!-- TIER 4 — DATA -->
+    <text x="0" y="292" class="dg-tier">DATA</text>
+    <rect x="100" y="256" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="210" y="284" class="dg-label" text-anchor="middle">Gaps</text>
+    <text x="210" y="302" class="dg-sub" text-anchor="middle">the record itself</text>
+    <rect x="340" y="256" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="450" y="284" class="dg-label" text-anchor="middle">Owners &amp; actions</text>
+    <text x="450" y="302" class="dg-sub" text-anchor="middle">who, what, by when</text>
+    <rect x="580" y="256" width="220" height="64" rx="3" class="dg-box"/>
+    <text x="690" y="284" class="dg-label" text-anchor="middle">Audit trail</text>
+    <text x="690" y="302" class="dg-sub" text-anchor="middle">every state change</text>
+    <line x1="450" y1="320" x2="450" y2="338" class="dg-line" marker-end="url(#arrowhead)"/>
+
+    <!-- TIER 5 — REPORTING -->
+    <text x="0" y="370" class="dg-tier">REPORTING</text>
+    <rect x="100" y="342" width="700" height="46" rx="3" class="dg-box"/>
+    <text x="450" y="370" class="dg-label" text-anchor="middle">Power BI — management reporting on open gaps, ageing, and closure rate</text>
+  </svg>
+  <div class="diagram-caption">Runtime architecture. Figma sat upstream of all of this as the design step, not a running component.</div>
+</div>
+    <p>Five tiers, each one dependent only on the tier below it. The interface holds no logic
+       and the flows hold no state — everything durable lives in the data layer, which is what
+       makes the audit trail trustworthy rather than best-effort.</p>
+    <p>The design decision worth defending is the <strong>separate audit table</strong>. It would
+       have been faster to timestamp columns on the gap record itself. But that stores only the
+       latest change, and the question an auditor asks is about the sequence. Writing every state
+       transition as its own row costs storage and buys the ability to answer that question.</p>
+    <p>The data layer was implemented using <strong>SharePoint Lists</strong>.</p>
+  </div>
+</div>
+
+
+<div class="case-row reveal">
+  <div class="case-label">What I built</div>
+  <div class="case-body">
+    <h4>Design</h4>
+    <p>Wireframed the interface in Figma before building anything. On a Power Apps project this is
+       skippable and usually skipped — you can drag controls onto a canvas and have something
+       running in an hour. Doing the design step first meant the disagreements about what a gap
+       record should contain happened over a wireframe rather than over a half-built app.</p>
+
+    <h4>Build</h4>
+    <p>Built the canvas app, the Power Automate flows behind it, and the database layer underneath.
+       Delivered on an Agile cadence with the client seeing working software each iteration rather
+       than a status deck.</p>
+
+    <h4>Validation</h4>
+    <p>Led UAT with the people who would actually use it. This is where the design assumptions got
+       tested against how compliance leads really work, and where the tool stopped being what I
+       thought they needed.</p>
+
+    <h4>Handover</h4>
+    <p>Deployed as the single system of record and handed to the client to run.</p>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">Outcome</div>
+  <div class="case-body">
+    <ul>
+      <li>Deployed to <strong>100+ internal users</strong> as the single system of record for gap
+          reporting.</li>
+      <li>Every state change captured, so the audit question became a query instead of an
+          archaeology exercise.</li>
+      <li>Management reporting fed from one source rather than a manual reconciliation.</li>
+    </ul>
+      <p><br>Power Platform made it possible to ship fast and leave the client something they could
+         maintain without us. That was the right trade-off for the constraints. </p>
+  </div>
+</div>
+
+<div class="case-row reveal">
+  <div class="case-label">What I'd do differently</div>
+  <div class="case-body">
+    <p>Power Platform got this shipped fast and left the client something they could maintain
+       without us. Those were the right trade-offs for the constraints. But two things I would
+       approach differently now:</p>
+    <ul>
+      <li><strong>No automated tests.</strong> Every regression was caught by a human clicking
+          through the app. That is fine for one release and it does not scale — the client
+          inherited a tool where any change carries risk they have no way to measure.</li>
+      <li><strong>Solution packaging was an afterthought.</strong> Environments and managed
+          solutions were something to sort out at deployment rather than a decision made at the
+          start, which made moving between dev and production more manual than it needed to be.</li>
+    </ul>
+    <p><br> The broader lesson is that low-code shifts effort rather than removing it. It buys speed at
+       the front and charges for it in lifecycle management, and knowing which of those two you
+       actually need is the real decision.</p>
+  </div>
+</div>
+
+</div>
+<div class="wrap">
+<nav class="case-nav reveal" aria-label="Other projects">
+  <a href="../../index.html#work">
+    <span class="case-nav-label">← Back</span>
+    <span class="case-nav-title">All work</span>
+  </a>
+  <a href="../power-platform-suite/">
+    <span class="case-nav-label">Next →</span>
+    <span class="case-nav-title">Power Platform tool suite</span>
+  </a>
+</nav>
+<div class="case-cta reveal">
+  <p>Happy to walk through the build, the decisions, and what the data layer actually looked like.</p>
+  <a class="btn btn-primary" href="mailto:shaandilyaprathit@gmail.com?subject=Walkthrough%3A%20GAP%20Reporting%20Tool">Request a walkthrough</a>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Prathit Shaandilya</span>
+    <span>Built with intent, not a template.</span>
+  </div>
+</footer>
+
+<script src="../../assets/site.js" defer></script>
+<!-- Cloudflare Web Analytics — swap the placeholder token below for the real one. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "d493bfedbdd84c4985286b6f5f728c3f"}'></script>
+
+</body>
+</html>
