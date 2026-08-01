@@ -61,6 +61,15 @@
   <a href="index.html#experience">Experience</a>
   <a href="index.html#about">About</a>
   <a href="index.html#contact">Contact</a>
+  <div class="mob-menu-meta">
+    <div class="mob-menu-links">
+      <a href="assets/Prathit_Shaandilya_Resume.pdf" download>Resume</a>
+      <a href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Pratzy101" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="mob-menu-loc">Noida, India<br>IST</div>
+  </div>
+
 </nav>
 <!-- ============================================================================
      MODULE END: CHROME
@@ -82,6 +91,44 @@
   <p class="page-lead">A running record of the work behind this site and the AI engineering
      sprint alongside it. Updated as things ship. The failures are included on purpose —
      they carry more information than the wins.</p>
+</div>
+
+<div class="log-entry reveal">
+  <div class="log-date">1 Aug 2026</div>
+  <div class="log-body">
+    <h3>V1.3.1 — two mobile bugs I shipped</h3>
+    <p>Both found on a real phone rather than in testing, which is the honest
+       version of what happened.</p>
+    <div class="log-snag">
+      <span class="log-snag-label">Snag</span>
+      Fixing the email overflow in V1.3 introduced a worse-looking bug. I used
+      <span class="mono">overflow-wrap:anywhere</span>, which stopped the page
+      scrolling sideways but broke the address mid-word across two lines. The
+      page measured correctly and read badly. Now the type is sized against the
+      space actually available so the address always fits on one line.
+    </div>
+    <div class="log-snag">
+      <span class="log-snag-label">Snag</span>
+      The fixed corner chrome — name, location, social links — sat transparently
+      on top of scrolling content on mobile. It works on desktop because the
+      content column is capped at 920px and centred, so the corners sit in the
+      empty margin. On a phone the column is the full viewport and its text
+      starts at exactly the same 28px offset the corners occupy, so they
+      collided. Present since V1; the taller V1.2 hero made it obvious.
+    </div>
+    <p>The top corner is now a real header bar — full width, opaque — so content
+       passes beneath it. The bottom corners are hidden on mobile and their links
+       moved into the menu; a second opaque bar would have cost another 44px of a
+       small screen on top of the browser's own toolbar.</p>
+    <p>The lesson is about the test, not the CSS. I checked that no page scrolled
+       sideways and treated that as "mobile is fine". Nothing checked whether
+       fixed elements overlapped content, so a whole class of bug was invisible
+       to the suite. That check now walks every text node against the chrome
+       rectangles at each scroll position.</p>
+    <div class="log-tags">
+      <span class="tag">bugfix</span><span class="tag">mobile</span><span class="tag">CSS</span>
+    </div>
+  </div>
 </div>
 
 <div class="log-entry reveal">

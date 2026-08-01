@@ -136,8 +136,59 @@ ul{ list-style:none; }
   }
   .mob-menu.open{ display:flex; opacity:1; }
   .mob-menu a{ font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; }
-  .corner-bl, .corner-br{ font-size:10.5px; }
+
+  /* ------------------------------------------------------------------------
+     V1.3.1 — fixed chrome no longer overlaps scrolling content.
+
+     The four corners are position:fixed with a transparent background. On
+     desktop that works because .wrap is capped at 920px and centred, so the
+     corners sit in the empty margin either side. On mobile .wrap spans the
+     full viewport and its text begins at exactly 28px — the same place the
+     corners sit — so content scrolled underneath them collided with the name,
+     the location, and the social links.
+
+     Verified by walking every text node against the chrome rectangles at four
+     scroll positions: the homepage produced collisions at all four on mobile
+     and none at any on desktop.
+
+     Top: the name becomes a real header bar — full width, opaque, with a
+     hairline under it. Content now passes cleanly beneath instead of through.
+
+     Bottom: hidden. A second opaque bar would cost another 44px of a small
+     screen on top of the browser's own toolbar. The links it held move into
+     the menu, which is where a phone user looks for them anyway.
+     ------------------------------------------------------------------------ */
+  .corner-tl{
+    top:0; left:0; right:0; height:60px; display:flex; align-items:center;
+    padding:0 24px; background:var(--bg); border-bottom:1px solid var(--border-soft);
+  }
+  .mob-toggle{ top:13px; right:20px; }
+  .corner-bl, .corner-br{ display:none; }
+
+  /* Anchor targets would otherwise land underneath the new header bar. */
+  section[id]{ scroll-margin-top:70px; }
+
+  /* Resume / LinkedIn / GitHub and the location line, relocated into the menu.
+     These need their own selectors because .mob-menu a above sets 32px. */
+  .mob-menu-meta{
+    width:100%; margin-top:38px; padding-top:26px;
+    border-top:1px solid var(--border-soft);
+    display:flex; flex-direction:column; gap:18px;
+  }
+  .mob-menu-links{ display:flex; flex-wrap:wrap; gap:24px; }
+  .mob-menu .mob-menu-links a{
+    font-family:'JetBrains Mono', monospace; font-size:12.5px; font-weight:400;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
+  }
+  .mob-menu-loc{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--text-faint); line-height:1.6;
+  }
 }
+
+/* The menu block is mobile-only markup; keep it out of the desktop layout. */
+.mob-menu-meta{ display:none; }
+@media (max-width:900px){ .mob-menu-meta{ display:flex; } }
 
 /* ============================================================================
    SECTIONS AND TYPOGRAPHY
@@ -312,19 +363,33 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
 }
 .email-card:hover{ border-color:var(--text-dim); background:var(--surface-2); }
 .email-card-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
-/* V1.3 fix — carried over from V1.2, where this overflowed the viewport by
-   10px on a 390px screen. Two causes, both needed fixing:
-     1. The unclassed <div> holding the label and value is a flex item, and a
-        flex item defaults to min-width:auto — it refuses to shrink below its
-        content. min-width:0 lets it.
-     2. An email address has no spaces, so it is one unbreakable word.
-        overflow-wrap:anywhere permits a mid-word break when nothing else fits. */
+/* V1.3.1 — the email address must never wrap.
+   V1.3 fixed the viewport overflow with overflow-wrap:anywhere, which stopped
+   the page scrolling sideways but broke the address across two lines mid-word
+   ("...@gmail." / "com"). An address split like that reads as a layout failure,
+   so instead of letting it wrap, the type is sized so it always fits.
+
+   The width available to the text is:
+       100vw - 56px (.wrap padding) - 36px (card padding) - 28px (arrow + gap)
+     = 100vw - 120px
+
+   Dividing by 15.2 is the measured ratio of that width to the rendered width of
+   this specific 27-character address, with roughly 9% headroom. Measured against
+   a fallback face wider than Space Grotesk, so the real font has more slack still.
+   If the address ever changes, re-measure — the divisor is specific to its length.
+
+   min-width:0 stays: the unclassed <div> holding label and value is a flex item,
+   and a flex item defaults to min-width:auto, refusing to shrink below content. */
 .email-card > div{ min-width:0; }
 .email-card-value{
   font-size:22px; font-weight:600; letter-spacing:-0.01em;
-  font-family:'Space Grotesk', sans-serif; display:block; overflow-wrap:anywhere;
+  font-family:'Space Grotesk', sans-serif; display:block; white-space:nowrap;
 }
-@media (max-width:420px){ .email-card-value{ font-size:19px; } }
+@media (max-width:640px){
+  .email-card{ padding:22px 18px; gap:12px; }
+  .email-card-value{ font-size:clamp(12px, calc((100vw - 120px) / 15.2), 22px); }
+  .email-arrow{ font-size:16px; }
+}
 .email-arrow{ color:var(--text-dim); font-size:20px; }
 
 .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
@@ -422,6 +487,15 @@ a.work-card:hover h3{ color:var(--white); }
 }
 .case-body li::before{ content:'—'; position:absolute; left:0; color:var(--text-faint); }
 .case-body li:last-child{ margin-bottom:0; }
+
+/* V1.3.1 — a paragraph directly after a list needs more separation than the
+   16px used between consecutive paragraphs, or it reads as another bullet that
+   lost its dash. Handled here rather than with a <br> inside the paragraph:
+   a <br> is a line break, not spacing, so it produces a full blank line that
+   does not scale with the type and leaves an empty first line for screen
+   readers to announce. Applies to the log page for the same reason. */
+.case-body ul + p,
+.log-body ul + p{ margin-top:26px; }
 .case-body h4{
   font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:400;
   letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim);

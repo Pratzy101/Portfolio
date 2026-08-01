@@ -61,6 +61,15 @@
   <a href="../../index.html#experience">Experience</a>
   <a href="../../index.html#about">About</a>
   <a href="../../index.html#contact">Contact</a>
+  <div class="mob-menu-meta">
+    <div class="mob-menu-links">
+      <a href="../../assets/Prathit_Shaandilya_Resume.pdf" download>Resume</a>
+      <a href="https://www.linkedin.com/in/shaandilyaprathit/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://github.com/Pratzy101" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="mob-menu-loc">Noida, India<br>IST</div>
+  </div>
+
 </nav>
 <!-- ============================================================================
      MODULE END: CHROME
@@ -68,25 +77,6 @@
 
 <main id="main-content" class="subpage-main">
 <div class="wrap">
-
-<!-- ============================================================================
-     >>> VERIFY BEFORE PUSHING <<<
-     Drafted from what already appears on your homepage and CV. These claims are
-     yours and already public:
-       · Luxembourg-based steel manufacturing client, KPMG GRCS
-       · Figma wireframes -> Power Apps -> Power Automate, you owned the DB layer
-       · Agile delivery, you led UAT
-       · 100+ internal users; scattered spreadsheets with no owner or audit trail
-
-     These are INFERRED and need your confirmation or correction:
-       · The three named Power Apps screens (register / form / status view)
-       · The three named flows (routing / approval / reminders)
-       · The three named tables (gaps / owners+actions / audit)
-       · Everything in CONSTRAINTS
-       · Everything in WHAT I'D DO DIFFERENTLY
-     Two .tbd blocks below mark the spots I could not infer at all.
-     Delete this comment once the page is true.
-     ============================================================================ -->
 
 <a class="back-link" href="../../index.html#work"><span aria-hidden="true">←</span> Work</a>
 
@@ -144,7 +134,7 @@
       <li><strong>No reliable rollup.</strong> Management reporting meant someone manually
           reconciling workbooks, so the number was always slightly wrong and always late.</li>
     </ul>
-    <p><br>The spreadsheets were not the root problem. The absence of a system of record was.</p>
+    <p>The spreadsheets were not the root problem. The absence of a system of record was.</p>
   </div>
 </div>
 
@@ -237,10 +227,10 @@
     <p>Five tiers, each one dependent only on the tier below it. The interface holds no logic
        and the flows hold no state — everything durable lives in the data layer, which is what
        makes the audit trail trustworthy rather than best-effort.</p>
-    <p>The design decision worth defending is the <strong>separate audit table</strong>. It would
+    <p>The design decision worth defending is the <strong>separate audit list</strong>. It would
        have been faster to timestamp columns on the gap record itself. But that stores only the
        latest change, and the question an auditor asks is about the sequence. Writing every state
-       transition as its own row costs storage and buys the ability to answer that question.</p>
+       transition as its own item costs storage and buys the ability to answer that question.</p>
     <p>The data layer was implemented using <strong>SharePoint Lists</strong>.</p>
   </div>
 </div>
@@ -280,7 +270,7 @@
           archaeology exercise.</li>
       <li>Management reporting fed from one source rather than a manual reconciliation.</li>
     </ul>
-      <p><br>Power Platform made it possible to ship fast and leave the client something they could
+      <p>Power Platform made it possible to ship fast and leave the client something they could
          maintain without us. That was the right trade-off for the constraints. </p>
   </div>
 </div>
@@ -299,7 +289,7 @@
           solutions were something to sort out at deployment rather than a decision made at the
           start, which made moving between dev and production more manual than it needed to be.</li>
     </ul>
-    <p><br> The broader lesson is that low-code shifts effort rather than removing it. It buys speed at
+    <p>The broader lesson is that low-code shifts effort rather than removing it. It buys speed at
        the front and charges for it in lifecycle management, and knowing which of those two you
        actually need is the real decision.</p>
   </div>
