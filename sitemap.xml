@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  This is a one-page site, so there is only one <url> entry. If you ever add
-  separate pages (e.g. individual project case studies), add one <url> block
-  per page here.
+  The two template case-study pages (power-platform-suite, quadcopter-drones)
+  are deliberately absent. They are scaffolded but not written, and submitting
+  thin pages to a search engine is a negative signal. Add these two blocks once
+  the pages have real content:
+
+    <url><loc>https://pratzy101.github.io/Portfolio/work/power-platform-suite/</loc>
+         <lastmod>YYYY-MM-DD</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+    <url><loc>https://pratzy101.github.io/Portfolio/work/quadcopter-drones/</loc>
+         <lastmod>YYYY-MM-DD</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -10,5 +16,17 @@
     <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://pratzy101.github.io/Portfolio/work/gap-reporting-tool/</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pratzy101.github.io/Portfolio/log.html</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
