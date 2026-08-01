@@ -1,0 +1,540 @@
+/* ============================================================================
+   DESIGN TOKENS
+   All colours, sizes, and timing values. Change here to update the whole site.
+
+   V1.2 palette note: the new design uses several near-duplicate greys
+   (#8a8a8a and #a8a8a8, #0d0d0d and #0f0f0f) that were likely just small
+   drift from the design tool rather than deliberate distinct tones — they're
+   consolidated into single tokens here (--text-dim, --surface-raised) for
+   maintainability. The visual difference is under 3%, imperceptible in practice.
+   ============================================================================ */
+:root{
+  --bg:#0a0a0a;
+  --surface:#141414;
+  --surface-2:#1b1b1b;
+  --surface-raised:#0f0f0f;
+  --border:#2f2f2f;
+  --border-soft:#1d1d1d;
+  --text:#f4f4f2;
+  --text-soft:#c4c4c4;
+  --text-dim:#a8a8a8;
+  --text-faint:#6e6e6e;
+  --text-marquee:#7d7d7d;
+  --white:#ffffff;
+  --maxw:920px;
+}
+
+/* ============================================================================
+   RESET AND BASE
+   ============================================================================ */
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg); color:var(--text); font-family:'Inter', system-ui, sans-serif;
+  line-height:1.6; -webkit-font-smoothing:antialiased; cursor:none;
+}
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+}
+
+::selection{ background:var(--white); color:var(--bg); }
+h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
+.mono{ font-family:'JetBrains Mono', monospace; }
+a{ color:inherit; text-decoration:none; }
+ul{ list-style:none; }
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
+
+:focus-visible{ outline:2px solid var(--white); outline-offset:3px; }
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ============================================================================
+   SKIP LINK
+   Lets keyboard and screen-reader users jump past the fixed nav chrome
+   straight to content. Hidden until focused.
+   ============================================================================ */
+.skip-link{
+  position:absolute; top:8px; left:8px; z-index:9999;
+  padding:10px 16px; background:var(--white); color:var(--bg);
+  border-radius:6px; font-family:'JetBrains Mono', monospace; font-size:13px;
+  transform:translateY(-200%); transition:transform .2s ease;
+}
+.skip-link:focus{ transform:translateY(0); }
+
+/* ============================================================================
+   BACKGROUND GRID
+   ============================================================================ */
+.grid-bg{
+  position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+  background-size:48px 48px;
+  -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
+  mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
+}
+
+/* ============================================================================
+   CUSTOM CURSOR
+   Restored in V1.2 — the uploaded design had no cursor code at all, and
+   no JS of any kind. Same fixed-in-V1.1 behaviour: scroll clears it
+   immediately, plus a 600ms idle timeout as backup.
+   ============================================================================ */
+#cursor{
+  position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
+  border:1px solid var(--white); pointer-events:none; z-index:9999; opacity:0;
+  transform:translate(-50%,-50%); transition:width .2s ease, height .2s ease, background .2s ease, opacity .2s ease;
+  mix-blend-mode:difference;
+}
+#cursor.active{ opacity:1; }
+#cursor.grow{ width:52px; height:52px; background:var(--white); }
+
+/* ============================================================================
+   FIXED CORNER CHROME
+   V1.2 note: the uploaded design had the top corners as position:absolute
+   (they would scroll away) while the bottom corners were position:fixed.
+   Kept all four fixed here for a consistent persistent-chrome pattern,
+   matching every prior version of this site.
+   ============================================================================ */
+.corner{
+  position:fixed; z-index:200; font-family:'JetBrains Mono', monospace;
+  font-size:11.5px; letter-spacing:0.06em; color:var(--text-dim);
+}
+.corner-tl{ top:28px; left:28px; }
+.corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; text-transform:uppercase; }
+.corner-tr{ top:28px; right:28px; display:flex; gap:26px; }
+.corner-tr a{ text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .2s ease; }
+.corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white); transition:width .25s ease; }
+.corner-tr a:hover{ color:var(--white); }
+.corner-tr a:hover::after{ width:100%; }
+.corner-bl{ bottom:28px; left:28px; text-transform:uppercase; line-height:1.6; }
+.corner-br{ bottom:28px; right:28px; display:flex; gap:20px; text-transform:uppercase; }
+.corner-br a{ transition:color .2s ease; }
+.corner-br a:hover{ color:var(--white); }
+
+/* ============================================================================
+   MOBILE MENU
+   Restored in V1.2 — the uploaded design had no responsive nav collapse,
+   so "Work / Experience / About / Contact" would overflow on small screens.
+   ============================================================================ */
+.mob-toggle{ display:none; }
+.mob-menu{ display:none; }
+@media (max-width:900px){
+  .corner-tr{ display:none; }
+  .mob-toggle{
+    display:block; position:fixed; top:26px; right:24px; z-index:210;
+    background:none; border:1px solid var(--border); border-radius:6px;
+    padding:8px 10px; color:var(--text);
+  }
+  .mob-menu{
+    position:fixed; inset:0; background:var(--bg); z-index:205;
+    display:none; flex-direction:column; align-items:flex-start; justify-content:center; gap:22px;
+    padding:0 40px; opacity:0; transition:opacity .3s ease;
+  }
+  .mob-menu.open{ display:flex; opacity:1; }
+  .mob-menu a{ font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; }
+  .corner-bl, .corner-br{ font-size:10.5px; }
+}
+
+/* ============================================================================
+   SECTIONS AND TYPOGRAPHY
+   ============================================================================ */
+section{ padding:120px 0; border-bottom:1px solid var(--border-soft); }
+section:last-of-type{ border-bottom:none; }
+.eyebrow{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
+h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bottom:20px; }
+.section-lead{ color:var(--text-dim); font-size:15.5px; max-width:600px; margin-bottom:56px; }
+
+/* ============================================================================
+   SCROLL REVEAL
+   ============================================================================ */
+.reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.in-view{ opacity:1; transform:translateY(0); }
+@media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+/* ============================================================================
+   BUTTONS
+   Shared across hero, work, and follow CTAs.
+   ============================================================================ */
+.btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:14px 24px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
+.btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
+.btn-primary:hover{ background:transparent; color:var(--white); }
+.btn-ghost{ color:#e2e2e2; }
+.btn-ghost:hover{ border-color:var(--text-dim); }
+
+/* ============================================================================
+   HERO SECTION
+   New copy (V1.2): "AVAILABLE NOW" status pill, "I turn messy enterprise
+   processes into systems that ship." headline, tightened two-button CTA row.
+   ============================================================================ */
+#home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:100px 0 110px; border-bottom:1px solid var(--border-soft); }
+.status-line{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim); border:1px solid var(--border); padding:6px 12px; border-radius:100px; margin-bottom:32px; width:fit-content; }
+.status-dot{ width:6px; height:6px; border-radius:50%; background:#eaeaea; animation:pulse 2s infinite; }
+@keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+.hero-name{ font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:18px; }
+.hero-head{ font-size:clamp(44px,8.6vw,108px); font-weight:600; line-height:0.98; margin-bottom:28px; }
+.hero-head .line{ display:block; }
+.hero-head .dim{ color:var(--text-faint); }
+.hero-sub{ max-width:600px; color:var(--text-dim); font-size:16.5px; margin-bottom:40px; }
+.btn-row{ display:flex; flex-wrap:wrap; gap:12px; }
+
+/* ============================================================================
+   MARQUEE (SKILLS STRIP)
+   ============================================================================ */
+.marquee-wrap{ border-bottom:1px solid var(--border-soft); overflow:hidden; padding:22px 0; }
+.marquee{ display:flex; width:max-content; animation:scroll 26s linear infinite; }
+.marquee span{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.08em; color:var(--text-marquee); text-transform:uppercase; padding:0 28px; white-space:nowrap; }
+.marquee span::after{ content:'/'; margin-left:28px; color:var(--border-soft); }
+@keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+@media (prefers-reduced-motion:reduce){ .marquee{ animation:none; } }
+
+/* ============================================================================
+   PROOF / STATS STRIP (new in V1.2)
+   Four-number credibility strip sitting between the marquee and Work.
+   Editable: each .stat-num / .stat-label pair.
+   ============================================================================ */
+.proof-section{ padding:76px 0; }
+.stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+.stat-num{ font-family:'Space Grotesk', sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.02em; line-height:1; }
+.stat-label{ font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.08em; color:var(--text-dim); text-transform:uppercase; margin-top:8px; }
+@media (max-width:640px){ .stat-grid{ grid-template-columns:repeat(2,1fr); row-gap:36px; } }
+
+/* ============================================================================
+   WORK SECTION (renamed from Projects in V1.2)
+   Flagship spotlight card (problem / what I did / outcome) + supporting
+   grid + a "currently building" callout + live GitHub activity.
+   ============================================================================ */
+.work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
+@media (max-width:640px){ .work-grid{ grid-template-columns:1fr; } }
+
+.work-flagship{ grid-column:1 / -1; background:var(--surface-raised); padding:40px 36px; display:flex; flex-direction:column; gap:16px; }
+.flagship-meta{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.flagship-pill{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--bg); background:var(--text); padding:4px 10px; border-radius:100px; }
+.flagship-context{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+.work-flagship h3{ font-size:27px; font-weight:600; }
+.flagship-breakdown{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:4px; }
+@media (max-width:640px){ .flagship-breakdown{ grid-template-columns:1fr; gap:16px; } }
+.flagship-breakdown h4{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+.flagship-breakdown p{ color:var(--text-soft); font-size:14.5px; }
+.work-link{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border-bottom:1px solid #3a3a3a; padding-bottom:3px; width:fit-content; margin-top:8px; transition:border-color .2s ease; }
+.work-link:hover{ border-bottom-color:var(--white); }
+
+.work-card{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:230px; }
+.work-card-meta{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
+.work-card h3{ font-size:19px; font-weight:600; }
+.work-card p{ color:var(--text-dim); font-size:14.5px; flex-grow:1; }
+
+.tags{ display:flex; flex-wrap:wrap; gap:6px; }
+.tag{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim); border:1px solid var(--border); padding:4px 9px; border-radius:100px; }
+
+.work-building{
+  display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  border:1px solid var(--border-soft); border-top:none; background:var(--surface-raised); padding:26px 32px;
+}
+.work-building-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
+.work-building p{ color:var(--text-soft); font-size:14.5px; max-width:560px; }
+.follow-btn{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border:1px solid var(--border); border-radius:6px; padding:11px 18px; white-space:nowrap; transition:border-color .2s ease; }
+.follow-btn:hover{ border-color:var(--text-dim); }
+
+/* ============================================================================
+   GITHUB ACTIVITY
+   Carried forward from V1.1. Sits directly below the "currently building"
+   bar — the live counterpart to that static message. Fetches recent public
+   pushes client-side; degrades to a plain profile link on any failure.
+   ============================================================================ */
+.gh-activity{ margin-top:32px; }
+.gh-activity-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
+.gh-row{
+  display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+  padding:12px 0; border-top:1px solid var(--border-soft); font-size:13.5px;
+}
+.gh-row:first-child{ border-top:none; }
+.gh-repo{ color:var(--text); font-family:'JetBrains Mono', monospace; font-size:12.5px; }
+.gh-repo a:hover{ color:var(--white); text-decoration:underline; }
+.gh-msg{ color:var(--text-dim); flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.gh-time{ color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:11.5px; flex-shrink:0; }
+.gh-fallback{ color:var(--text-faint); font-size:13.5px; }
+.gh-fallback a{ text-decoration:underline; color:var(--text-dim); }
+.gh-fallback a:hover{ color:var(--white); }
+@media (max-width:640px){
+  .gh-row{ flex-direction:column; gap:4px; }
+  .gh-msg{ white-space:normal; }
+}
+
+/* ============================================================================
+   EXPERIENCE SECTION
+   V1.2: the standalone "Career Break" row is replaced with a trailing note
+   below the timeline, per the new design.
+   ============================================================================ */
+.xrow{ padding:34px 0; border-top:1px solid var(--border-soft); display:grid; grid-template-columns:120px 1fr; gap:24px; }
+.timeline > .xrow:first-child{ border-top:1px solid var(--border-soft); }
+.timeline > .xrow:last-child{ border-bottom:1px solid var(--border-soft); }
+.xdate{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); padding-top:6px; }
+.xrole{ font-size:clamp(19px,2.4vw,24px); font-weight:600; margin-bottom:4px; }
+.xplace{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
+.xrow ul{ padding-left:18px; color:var(--text-dim); font-size:14.5px; }
+.xrow li{ margin-bottom:8px; list-style:disc; }
+.xrow li:last-child{ margin-bottom:0; }
+.xrow p.desc{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
+@media (max-width:640px){ .xrow{ grid-template-columns:1fr; gap:8px; } }
+.career-note{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--text-dim); margin-top:20px; }
+
+/* ============================================================================
+   ABOUT SECTION
+   ============================================================================ */
+.about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
+@media (max-width:720px){ .about-grid{ grid-template-columns:1fr; } }
+.about-bio p{ margin-bottom:16px; font-size:15.5px; }
+.about-bio p:first-child{ color:var(--text-soft); font-size:16px; }
+.about-bio p:not(:first-child){ color:var(--text-dim); }
+.about-block{ margin-bottom:34px; }
+.about-block:last-child{ margin-bottom:0; }
+.about-block h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono', monospace; color:var(--text-dim); margin-bottom:14px; font-weight:400; }
+.about-block ul{ color:var(--text-dim); font-size:14px; }
+.about-block li{ margin-bottom:10px; padding-left:14px; position:relative; }
+.about-block li:last-child{ margin-bottom:0; }
+.about-block li::before{ content:'—'; position:absolute; left:0; color:var(--text-dim); }
+.skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
+
+/* ============================================================================
+   CONTACT SECTION
+   V1.2: "Let's talk" headline, one large primary email card, LinkedIn/GitHub
+   as a two-column pair below, alt email as small print.
+   ============================================================================ */
+.contact-lead{ color:var(--text-dim); max-width:520px; margin-bottom:44px; font-size:16px; }
+.email-card{
+  display:flex; align-items:center; justify-content:space-between; gap:20px;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:26px 28px; margin-bottom:14px; transition:border-color .2s ease, background .2s ease;
+}
+.email-card:hover{ border-color:var(--text-dim); background:var(--surface-2); }
+.email-card-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
+/* V1.3 fix — carried over from V1.2, where this overflowed the viewport by
+   10px on a 390px screen. Two causes, both needed fixing:
+     1. The unclassed <div> holding the label and value is a flex item, and a
+        flex item defaults to min-width:auto — it refuses to shrink below its
+        content. min-width:0 lets it.
+     2. An email address has no spaces, so it is one unbreakable word.
+        overflow-wrap:anywhere permits a mid-word break when nothing else fits. */
+.email-card > div{ min-width:0; }
+.email-card-value{
+  font-size:22px; font-weight:600; letter-spacing:-0.01em;
+  font-family:'Space Grotesk', sans-serif; display:block; overflow-wrap:anywhere;
+}
+@media (max-width:420px){ .email-card-value{ font-size:19px; } }
+.email-arrow{ color:var(--text-dim); font-size:20px; }
+
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
+.ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; transition:border-color .2s ease, background .2s ease; }
+.ccard:hover{ border-color:var(--text-dim); background:var(--surface-2); }
+.ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
+.ccard-value{ font-size:14.5px; }
+.arrow{ color:var(--text-dim); font-size:16px; }
+.contact-alt{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--text-dim); margin-top:18px; }
+
+footer{ padding:100px 0 130px; border-top:1px solid var(--border-soft); }
+footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12px; }
+
+/* ============================================================================
+   WORK CARD — LINK STATE (new in V1.3)
+   Three of the five work cards are now anchors pointing at deep-dive pages.
+   The two without a deep dive stay as plain divs and get no hover affordance,
+   so the hover state is a truthful signal that something is clickable rather
+   than decoration applied uniformly.
+   ============================================================================ */
+a.work-card{ position:relative; transition:background .25s ease; }
+a.work-card::after{
+  content:'↗'; position:absolute; top:28px; right:28px;
+  color:var(--text-faint); font-size:15px; opacity:0;
+  transform:translate(-4px,4px); transition:all .25s ease;
+}
+a.work-card:hover{ background:var(--surface-raised); }
+a.work-card:hover::after{ opacity:1; transform:translate(0,0); }
+a.work-card:hover h3{ color:var(--white); }
+
+/* ============================================================================
+   SUBPAGE SHELL (new in V1.3)
+   Case-study and log pages share this. They have no full-viewport hero, so
+   the first block needs manual top clearance for the fixed corner chrome.
+   ============================================================================ */
+.subpage-main{ padding-top:132px; }
+@media (max-width:900px){ .subpage-main{ padding-top:104px; } }
+
+.back-link{
+  font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--text-dim); display:inline-flex; gap:8px;
+  align-items:center; margin-bottom:40px; transition:color .2s ease;
+}
+.back-link:hover{ color:var(--white); }
+
+.page-head{ padding-bottom:8px; }
+.page-title{ font-size:clamp(32px,5.6vw,56px); font-weight:600; line-height:1.04; margin-bottom:20px; }
+.page-lead{ color:var(--text-dim); font-size:16.5px; max-width:640px; }
+
+/* ============================================================================
+   CASE STUDY — FACT STRIP
+   Role / client / year / stack. Deliberately mono and small: this is reference
+   data a reader scans, not a claim competing with the headline above it.
+   ============================================================================ */
+.fact-strip{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:24px;
+  border-top:1px solid var(--border-soft); padding:28px 0 4px; margin-top:40px;
+}
+@media (max-width:640px){ .fact-strip{ grid-template-columns:repeat(2,1fr); row-gap:24px; } }
+.fact-label{
+  font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-faint); margin-bottom:6px;
+}
+.fact-value{ font-size:14px; color:var(--text-soft); }
+
+/* ============================================================================
+   CASE STUDY — SECTION ROWS
+   Reuses the 120px + 1fr grid from the experience timeline so the case pages
+   read as the same system rather than a second design. The left rail carries
+   the section name; vertical order carries the sequence, so no numbering.
+   ============================================================================ */
+.case-row{
+  display:grid; grid-template-columns:120px 1fr; gap:24px;
+  padding:40px 0; border-top:1px solid var(--border-soft);
+}
+@media (max-width:720px){ .case-row{ grid-template-columns:1fr; gap:12px; } }
+.case-label{
+  font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-faint); padding-top:5px;
+}
+/* min-width:0 is load-bearing. A grid item defaults to min-width:auto, so this
+   column refuses to shrink below the intrinsic width of its widest child. The
+   architecture diagram sets min-width:520px, which without this forced the
+   whole page to 606px on a 390px screen and meant .diagram-wrap's
+   overflow-x:auto never got the chance to scroll. */
+.case-body{ min-width:0; }
+.case-body p{ color:var(--text-dim); font-size:15.5px; margin-bottom:16px; max-width:660px; }
+.case-body p:last-child{ margin-bottom:0; }
+.case-body strong{ color:var(--text); font-weight:600; }
+.case-body ul{ max-width:660px; }
+.case-body li{
+  color:var(--text-dim); font-size:15px; margin-bottom:12px;
+  padding-left:18px; position:relative;
+}
+.case-body li::before{ content:'—'; position:absolute; left:0; color:var(--text-faint); }
+.case-body li:last-child{ margin-bottom:0; }
+.case-body h4{
+  font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:400;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim);
+  margin:24px 0 10px;
+}
+.case-body h4:first-child{ margin-top:0; }
+
+/* Callout for the honest-limitation note — quieter than a warning, louder
+   than body copy. Used in "What I'd do differently". */
+.case-note{
+  border-left:2px solid var(--border); padding:4px 0 4px 18px;
+  color:var(--text-soft); font-size:15px; margin-top:8px;
+}
+
+/* ============================================================================
+   ARCHITECTURE DIAGRAM
+   Inline SVG, authored by hand so it version-controls and diffs like code.
+   Colours come from the same tokens as the rest of the page via currentColor
+   and CSS custom properties, so the diagram can never drift from the palette.
+   ============================================================================ */
+.diagram-wrap{
+  border:1px solid var(--border-soft); background:var(--surface-raised);
+  padding:32px 28px; margin:4px 0 18px; overflow-x:auto;
+}
+.diagram-wrap svg{ display:block; width:100%; height:auto; min-width:520px; }
+.diagram-caption{
+  font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.06em;
+  color:var(--text-faint); margin-top:14px; text-transform:uppercase;
+}
+.dg-box{ fill:var(--surface-2); stroke:var(--border); stroke-width:1; }
+.dg-box-accent{ fill:var(--text); stroke:var(--text); stroke-width:1; }
+.dg-label{ font-family:'JetBrains Mono', monospace; font-size:11px; fill:var(--text); letter-spacing:0.04em; }
+.dg-label-invert{ font-family:'JetBrains Mono', monospace; font-size:11px; fill:var(--bg); letter-spacing:0.04em; }
+.dg-sub{ font-family:'Inter', sans-serif; font-size:10px; fill:var(--text-faint); }
+.dg-line{ stroke:var(--border); stroke-width:1; fill:none; }
+.dg-arrow{ fill:var(--text-faint); }
+.dg-tier{ font-family:'JetBrains Mono', monospace; font-size:9.5px; fill:var(--text-faint); letter-spacing:0.12em; }
+
+/* ============================================================================
+   CASE STUDY — PREV / NEXT NAV
+   ============================================================================ */
+.case-nav{
+  display:grid; grid-template-columns:1fr 1fr; gap:1px;
+  background:var(--border-soft); border:1px solid var(--border-soft); margin-top:64px;
+}
+@media (max-width:640px){ .case-nav{ grid-template-columns:1fr; } }
+.case-nav a{
+  background:var(--bg); padding:28px 32px; display:flex; flex-direction:column;
+  gap:8px; transition:background .25s ease;
+}
+.case-nav a:hover{ background:var(--surface-raised); }
+.case-nav a:last-child{ text-align:right; align-items:flex-end; }
+@media (max-width:640px){ .case-nav a:last-child{ text-align:left; align-items:flex-start; } }
+.case-nav-label{
+  font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-faint);
+}
+.case-nav-title{ font-family:'Space Grotesk', sans-serif; font-size:17px; font-weight:600; }
+
+/* ============================================================================
+   CASE STUDY — CLOSING CTA
+   ============================================================================ */
+.case-cta{
+  border:1px solid var(--border-soft); background:var(--surface-raised);
+  padding:32px; margin-top:1px; display:flex; align-items:center;
+  justify-content:space-between; gap:24px; flex-wrap:wrap;
+}
+.case-cta p{ color:var(--text-soft); font-size:15px; max-width:520px; }
+
+/* ============================================================================
+   TEMPLATE PLACEHOLDER (new in V1.3)
+   Marks a case-study section that has scaffolding but no written content yet.
+   Visible in the source and in the page, so an unfinished page reads as
+   deliberately staged rather than broken. Delete the element once written.
+   ============================================================================ */
+.tbd{
+  font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-faint);
+  border:1px dashed var(--border); padding:14px 16px; border-radius:4px;
+  max-width:660px;
+}
+
+/* ============================================================================
+   BUILD LOG PAGE (new in V1.3)
+   Same 120px + 1fr rail as the case pages and the experience timeline.
+   ============================================================================ */
+.log-entry{
+  display:grid; grid-template-columns:120px 1fr; gap:24px;
+  padding:36px 0; border-top:1px solid var(--border-soft);
+}
+@media (max-width:720px){ .log-entry{ grid-template-columns:1fr; gap:10px; } }
+.log-date{
+  font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.06em;
+  color:var(--text-faint); text-transform:uppercase; padding-top:5px;
+}
+.log-entry h3{ font-size:19px; font-weight:600; margin-bottom:10px; }
+.log-body{ min-width:0; }   /* same grid trap as .case-body above */
+.log-body p{ color:var(--text-dim); font-size:15px; margin-bottom:14px; max-width:660px; }
+.log-body p:last-of-type{ margin-bottom:0; }
+.log-body ul{ max-width:660px; margin-bottom:14px; }
+.log-body li{
+  color:var(--text-dim); font-size:14.5px; margin-bottom:10px;
+  padding-left:18px; position:relative;
+}
+.log-body li::before{ content:'—'; position:absolute; left:0; color:var(--text-faint); }
+.log-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+
+/* A "snag" is a thing that broke or a wrong turn. Called out visually because
+   it is the part of a build log that carries the most information. */
+.log-snag{
+  border-left:2px solid var(--border); padding:2px 0 2px 16px;
+  color:var(--text-soft); font-size:14.5px; margin:0 0 14px;
+}
+.log-snag-label{
+  font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em;
+  text-transform:uppercase; color:var(--text-faint); display:block; margin-bottom:4px;
+}

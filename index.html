@@ -5,6 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Prathit Shaandilya — Data Analyst / AI Systems</title>
 <meta name="description" content="Prathit Shaandilya — analyst and enterprise consultant transitioning into AI Engineering. Experience, work, and contact.">
+
+<!-- ============================================================================
+     SOCIAL SHARE CARDS (new in V1.3)
+     Controls how the link renders when pasted into LinkedIn, Slack, WhatsApp,
+     or a message to a recruiter. Without these, the link previews as a bare
+     URL. og:image must be an absolute URL — relative paths are ignored by
+     every scraper.
+     ============================================================================ -->
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Prathit Shaandilya">
+<meta property="og:title" content="Prathit Shaandilya — Data Analyst turned AI Systems Builder">
+<meta property="og:description" content="Two years at KPMG and Accenture delivering process automation, internal tooling and analytics. Now building agents and retrieval-augmented systems.">
+<meta property="og:url" content="https://pratzy101.github.io/Portfolio/">
+<meta property="og:image" content="https://pratzy101.github.io/Portfolio/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Prathit Shaandilya — data analyst turned AI systems builder.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Prathit Shaandilya — Data Analyst turned AI Systems Builder">
+<meta name="twitter:description" content="Two years at KPMG and Accenture delivering process automation, internal tooling and analytics. Now building agents and retrieval-augmented systems.">
+<meta name="twitter:image" content="https://pratzy101.github.io/Portfolio/assets/og-image.png">
 <link rel="canonical" href="https://pratzy101.github.io/Portfolio/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Crect x='7' y='7' width='18' height='18' fill='none' stroke='%23f4f4f2' stroke-width='2'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,336 +66,7 @@
 }
 </script>
 
-<style>
-  /* ============================================================================
-     DESIGN TOKENS
-     All colours, sizes, and timing values. Change here to update the whole site.
-
-     V1.2 palette note: the new design uses several near-duplicate greys
-     (#8a8a8a and #a8a8a8, #0d0d0d and #0f0f0f) that were likely just small
-     drift from the design tool rather than deliberate distinct tones — they're
-     consolidated into single tokens here (--text-dim, --surface-raised) for
-     maintainability. The visual difference is under 3%, imperceptible in practice.
-     ============================================================================ */
-  :root{
-    --bg:#0a0a0a;
-    --surface:#141414;
-    --surface-2:#1b1b1b;
-    --surface-raised:#0f0f0f;
-    --border:#2f2f2f;
-    --border-soft:#1d1d1d;
-    --text:#f4f4f2;
-    --text-soft:#c4c4c4;
-    --text-dim:#a8a8a8;
-    --text-faint:#6e6e6e;
-    --text-marquee:#7d7d7d;
-    --white:#ffffff;
-    --maxw:920px;
-  }
-
-  /* ============================================================================
-     RESET AND BASE
-     ============================================================================ */
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg); color:var(--text); font-family:'Inter', system-ui, sans-serif;
-    line-height:1.6; -webkit-font-smoothing:antialiased; cursor:none;
-  }
-  @media (prefers-reduced-motion:reduce){
-    html{ scroll-behavior:auto; }
-  }
-
-  ::selection{ background:var(--white); color:var(--bg); }
-  h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
-  .mono{ font-family:'JetBrains Mono', monospace; }
-  a{ color:inherit; text-decoration:none; }
-  ul{ list-style:none; }
-  .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
-
-  :focus-visible{ outline:2px solid var(--white); outline-offset:3px; }
-
-  .sr-only{
-    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-    overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
-  }
-
-  /* ============================================================================
-     SKIP LINK
-     Lets keyboard and screen-reader users jump past the fixed nav chrome
-     straight to content. Hidden until focused.
-     ============================================================================ */
-  .skip-link{
-    position:absolute; top:8px; left:8px; z-index:9999;
-    padding:10px 16px; background:var(--white); color:var(--bg);
-    border-radius:6px; font-family:'JetBrains Mono', monospace; font-size:13px;
-    transform:translateY(-200%); transition:transform .2s ease;
-  }
-  .skip-link:focus{ transform:translateY(0); }
-
-  /* ============================================================================
-     BACKGROUND GRID
-     ============================================================================ */
-  .grid-bg{
-    position:fixed; inset:0; z-index:-1; pointer-events:none;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
-    background-size:48px 48px;
-    -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
-    mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
-  }
-
-  /* ============================================================================
-     CUSTOM CURSOR
-     Restored in V1.2 — the uploaded design had no cursor code at all, and
-     no JS of any kind. Same fixed-in-V1.1 behaviour: scroll clears it
-     immediately, plus a 600ms idle timeout as backup.
-     ============================================================================ */
-  #cursor{
-    position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
-    border:1px solid var(--white); pointer-events:none; z-index:9999; opacity:0;
-    transform:translate(-50%,-50%); transition:width .2s ease, height .2s ease, background .2s ease, opacity .2s ease;
-    mix-blend-mode:difference;
-  }
-  #cursor.active{ opacity:1; }
-  #cursor.grow{ width:52px; height:52px; background:var(--white); }
-
-  /* ============================================================================
-     FIXED CORNER CHROME
-     V1.2 note: the uploaded design had the top corners as position:absolute
-     (they would scroll away) while the bottom corners were position:fixed.
-     Kept all four fixed here for a consistent persistent-chrome pattern,
-     matching every prior version of this site.
-     ============================================================================ */
-  .corner{
-    position:fixed; z-index:200; font-family:'JetBrains Mono', monospace;
-    font-size:11.5px; letter-spacing:0.06em; color:var(--text-dim);
-  }
-  .corner-tl{ top:28px; left:28px; }
-  .corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; text-transform:uppercase; }
-  .corner-tr{ top:28px; right:28px; display:flex; gap:26px; }
-  .corner-tr a{ text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .2s ease; }
-  .corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white); transition:width .25s ease; }
-  .corner-tr a:hover{ color:var(--white); }
-  .corner-tr a:hover::after{ width:100%; }
-  .corner-bl{ bottom:28px; left:28px; text-transform:uppercase; line-height:1.6; }
-  .corner-br{ bottom:28px; right:28px; display:flex; gap:20px; text-transform:uppercase; }
-  .corner-br a{ transition:color .2s ease; }
-  .corner-br a:hover{ color:var(--white); }
-
-  /* ============================================================================
-     MOBILE MENU
-     Restored in V1.2 — the uploaded design had no responsive nav collapse,
-     so "Work / Experience / About / Contact" would overflow on small screens.
-     ============================================================================ */
-  .mob-toggle{ display:none; }
-  .mob-menu{ display:none; }
-  @media (max-width:900px){
-    .corner-tr{ display:none; }
-    .mob-toggle{
-      display:block; position:fixed; top:26px; right:24px; z-index:210;
-      background:none; border:1px solid var(--border); border-radius:6px;
-      padding:8px 10px; color:var(--text);
-    }
-    .mob-menu{
-      position:fixed; inset:0; background:var(--bg); z-index:205;
-      display:none; flex-direction:column; align-items:flex-start; justify-content:center; gap:22px;
-      padding:0 40px; opacity:0; transition:opacity .3s ease;
-    }
-    .mob-menu.open{ display:flex; opacity:1; }
-    .mob-menu a{ font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; }
-    .corner-bl, .corner-br{ font-size:10.5px; }
-  }
-
-  /* ============================================================================
-     SECTIONS AND TYPOGRAPHY
-     ============================================================================ */
-  section{ padding:120px 0; border-bottom:1px solid var(--border-soft); }
-  section:last-of-type{ border-bottom:none; }
-  .eyebrow{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
-  h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bottom:20px; }
-  .section-lead{ color:var(--text-dim); font-size:15.5px; max-width:600px; margin-bottom:56px; }
-
-  /* ============================================================================
-     SCROLL REVEAL
-     ============================================================================ */
-  .reveal{ opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
-  .reveal.in-view{ opacity:1; transform:translateY(0); }
-  @media (prefers-reduced-motion:reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
-
-  /* ============================================================================
-     BUTTONS
-     Shared across hero, work, and follow CTAs.
-     ============================================================================ */
-  .btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:14px 24px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
-  .btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
-  .btn-primary:hover{ background:transparent; color:var(--white); }
-  .btn-ghost{ color:#e2e2e2; }
-  .btn-ghost:hover{ border-color:var(--text-dim); }
-
-  /* ============================================================================
-     HERO SECTION
-     New copy (V1.2): "AVAILABLE NOW" status pill, "I turn messy enterprise
-     processes into systems that ship." headline, tightened two-button CTA row.
-     ============================================================================ */
-  #home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:100px 0 110px; border-bottom:1px solid var(--border-soft); }
-  .status-line{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim); border:1px solid var(--border); padding:6px 12px; border-radius:100px; margin-bottom:32px; width:fit-content; }
-  .status-dot{ width:6px; height:6px; border-radius:50%; background:#eaeaea; animation:pulse 2s infinite; }
-  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
-  .hero-name{ font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:18px; }
-  .hero-head{ font-size:clamp(44px,8.6vw,108px); font-weight:600; line-height:0.98; margin-bottom:28px; }
-  .hero-head .line{ display:block; }
-  .hero-head .dim{ color:var(--text-faint); }
-  .hero-sub{ max-width:600px; color:var(--text-dim); font-size:16.5px; margin-bottom:40px; }
-  .btn-row{ display:flex; flex-wrap:wrap; gap:12px; }
-
-  /* ============================================================================
-     MARQUEE (SKILLS STRIP)
-     ============================================================================ */
-  .marquee-wrap{ border-bottom:1px solid var(--border-soft); overflow:hidden; padding:22px 0; }
-  .marquee{ display:flex; width:max-content; animation:scroll 26s linear infinite; }
-  .marquee span{ font-family:'JetBrains Mono', monospace; font-size:13px; letter-spacing:0.08em; color:var(--text-marquee); text-transform:uppercase; padding:0 28px; white-space:nowrap; }
-  .marquee span::after{ content:'/'; margin-left:28px; color:var(--border-soft); }
-  @keyframes scroll{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
-  @media (prefers-reduced-motion:reduce){ .marquee{ animation:none; } }
-
-  /* ============================================================================
-     PROOF / STATS STRIP (new in V1.2)
-     Four-number credibility strip sitting between the marquee and Work.
-     Editable: each .stat-num / .stat-label pair.
-     ============================================================================ */
-  .proof-section{ padding:76px 0; }
-  .stat-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
-  .stat-num{ font-family:'Space Grotesk', sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.02em; line-height:1; }
-  .stat-label{ font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:0.08em; color:var(--text-dim); text-transform:uppercase; margin-top:8px; }
-  @media (max-width:640px){ .stat-grid{ grid-template-columns:repeat(2,1fr); row-gap:36px; } }
-
-  /* ============================================================================
-     WORK SECTION (renamed from Projects in V1.2)
-     Flagship spotlight card (problem / what I did / outcome) + supporting
-     grid + a "currently building" callout + live GitHub activity.
-     ============================================================================ */
-  .work-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border-soft); border:1px solid var(--border-soft); }
-  @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; } }
-
-  .work-flagship{ grid-column:1 / -1; background:var(--surface-raised); padding:40px 36px; display:flex; flex-direction:column; gap:16px; }
-  .flagship-meta{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .flagship-pill{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--bg); background:var(--text); padding:4px 10px; border-radius:100px; }
-  .flagship-context{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
-  .work-flagship h3{ font-size:27px; font-weight:600; }
-  .flagship-breakdown{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:4px; }
-  @media (max-width:640px){ .flagship-breakdown{ grid-template-columns:1fr; gap:16px; } }
-  .flagship-breakdown h4{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
-  .flagship-breakdown p{ color:var(--text-soft); font-size:14.5px; }
-  .work-link{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border-bottom:1px solid #3a3a3a; padding-bottom:3px; width:fit-content; margin-top:8px; transition:border-color .2s ease; }
-  .work-link:hover{ border-bottom-color:var(--white); }
-
-  .work-card{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:230px; }
-  .work-card-meta{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
-  .work-card h3{ font-size:19px; font-weight:600; }
-  .work-card p{ color:var(--text-dim); font-size:14.5px; flex-grow:1; }
-
-  .tags{ display:flex; flex-wrap:wrap; gap:6px; }
-  .tag{ font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--text-dim); border:1px solid var(--border); padding:4px 9px; border-radius:100px; }
-
-  .work-building{
-    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
-    border:1px solid var(--border-soft); border-top:none; background:var(--surface-raised); padding:26px 32px;
-  }
-  .work-building-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
-  .work-building p{ color:var(--text-soft); font-size:14.5px; max-width:560px; }
-  .follow-btn{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border:1px solid var(--border); border-radius:6px; padding:11px 18px; white-space:nowrap; transition:border-color .2s ease; }
-  .follow-btn:hover{ border-color:var(--text-dim); }
-
-  /* ============================================================================
-     GITHUB ACTIVITY
-     Carried forward from V1.1. Sits directly below the "currently building"
-     bar — the live counterpart to that static message. Fetches recent public
-     pushes client-side; degrades to a plain profile link on any failure.
-     ============================================================================ */
-  .gh-activity{ margin-top:32px; }
-  .gh-activity-label{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px; display:block; }
-  .gh-row{
-    display:flex; justify-content:space-between; align-items:baseline; gap:16px;
-    padding:12px 0; border-top:1px solid var(--border-soft); font-size:13.5px;
-  }
-  .gh-row:first-child{ border-top:none; }
-  .gh-repo{ color:var(--text); font-family:'JetBrains Mono', monospace; font-size:12.5px; }
-  .gh-repo a:hover{ color:var(--white); text-decoration:underline; }
-  .gh-msg{ color:var(--text-dim); flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .gh-time{ color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:11.5px; flex-shrink:0; }
-  .gh-fallback{ color:var(--text-faint); font-size:13.5px; }
-  .gh-fallback a{ text-decoration:underline; color:var(--text-dim); }
-  .gh-fallback a:hover{ color:var(--white); }
-  @media (max-width:640px){
-    .gh-row{ flex-direction:column; gap:4px; }
-    .gh-msg{ white-space:normal; }
-  }
-
-  /* ============================================================================
-     EXPERIENCE SECTION
-     V1.2: the standalone "Career Break" row is replaced with a trailing note
-     below the timeline, per the new design.
-     ============================================================================ */
-  .xrow{ padding:34px 0; border-top:1px solid var(--border-soft); display:grid; grid-template-columns:120px 1fr; gap:24px; }
-  .timeline > .xrow:first-child{ border-top:1px solid var(--border-soft); }
-  .timeline > .xrow:last-child{ border-bottom:1px solid var(--border-soft); }
-  .xdate{ font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--text-dim); padding-top:6px; }
-  .xrole{ font-size:clamp(19px,2.4vw,24px); font-weight:600; margin-bottom:4px; }
-  .xplace{ color:var(--text-dim); font-size:13.5px; margin-bottom:16px; }
-  .xrow ul{ padding-left:18px; color:var(--text-dim); font-size:14.5px; }
-  .xrow li{ margin-bottom:8px; list-style:disc; }
-  .xrow li:last-child{ margin-bottom:0; }
-  .xrow p.desc{ color:var(--text-dim); font-size:14.5px; max-width:640px; }
-  @media (max-width:640px){ .xrow{ grid-template-columns:1fr; gap:8px; } }
-  .career-note{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.04em; color:var(--text-dim); margin-top:20px; }
-
-  /* ============================================================================
-     ABOUT SECTION
-     ============================================================================ */
-  .about-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:56px; }
-  @media (max-width:720px){ .about-grid{ grid-template-columns:1fr; } }
-  .about-bio p{ margin-bottom:16px; font-size:15.5px; }
-  .about-bio p:first-child{ color:var(--text-soft); font-size:16px; }
-  .about-bio p:not(:first-child){ color:var(--text-dim); }
-  .about-block{ margin-bottom:34px; }
-  .about-block:last-child{ margin-bottom:0; }
-  .about-block h3{ font-size:12.5px; text-transform:uppercase; letter-spacing:0.1em; font-family:'JetBrains Mono', monospace; color:var(--text-dim); margin-bottom:14px; font-weight:400; }
-  .about-block ul{ color:var(--text-dim); font-size:14px; }
-  .about-block li{ margin-bottom:10px; padding-left:14px; position:relative; }
-  .about-block li:last-child{ margin-bottom:0; }
-  .about-block li::before{ content:'—'; position:absolute; left:0; color:var(--text-dim); }
-  .skill-tags{ display:flex; flex-wrap:wrap; gap:8px; }
-
-  /* ============================================================================
-     CONTACT SECTION
-     V1.2: "Let's talk" headline, one large primary email card, LinkedIn/GitHub
-     as a two-column pair below, alt email as small print.
-     ============================================================================ */
-  .contact-lead{ color:var(--text-dim); max-width:520px; margin-bottom:44px; font-size:16px; }
-  .email-card{
-    display:flex; align-items:center; justify-content:space-between; gap:20px;
-    background:var(--surface); border:1px solid var(--border); border-radius:10px;
-    padding:26px 28px; margin-bottom:14px; transition:border-color .2s ease, background .2s ease;
-  }
-  .email-card:hover{ border-color:var(--text-dim); background:var(--surface-2); }
-  .email-card-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
-  .email-card-value{ font-size:22px; font-weight:600; letter-spacing:-0.01em; font-family:'Space Grotesk', sans-serif; }
-  .email-arrow{ color:var(--text-dim); font-size:20px; }
-
-  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
-  .ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; transition:border-color .2s ease, background .2s ease; }
-  .ccard:hover{ border-color:var(--text-dim); background:var(--surface-2); }
-  .ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
-  .ccard-value{ font-size:14.5px; }
-  .arrow{ color:var(--text-dim); font-size:16px; }
-  .contact-alt{ font-family:'JetBrains Mono', monospace; font-size:11.5px; color:var(--text-dim); margin-top:18px; }
-
-  footer{ padding:100px 0 130px; border-top:1px solid var(--border-soft); }
-  footer .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:12px; }
-</style>
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
 
@@ -390,6 +82,7 @@
 <div class="corner corner-tl"><a href="#home" class="brand">PRATHIT SHAANDILYA</a></div>
 <nav class="corner corner-tr" aria-label="Primary">
   <a href="#work">Work</a>
+  <a href="log.html">Log</a>
   <a href="#experience">Experience</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
@@ -406,6 +99,7 @@
 </button>
 <nav class="mob-menu" id="mobMenu" aria-label="Mobile">
   <a href="#work">Work</a>
+  <a href="log.html">Log</a>
   <a href="#experience">Experience</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
@@ -525,15 +219,15 @@
           <span class="tag">Figma</span>
           <span class="tag">SQL</span>
         </div>
-        <a class="work-link" href="mailto:shaandilyaprathit@gmail.com?subject=Walkthrough%3A%20GAP%20Reporting%20Tool">Request a walkthrough →</a>
+        <a class="work-link" href="work/gap-reporting-tool/">Read the case study →</a>
       </div>
 
-      <div class="work-card">
+      <a class="work-card" href="work/power-platform-suite/">
         <span class="work-card-meta">KPMG · Internal</span>
         <h3>Power Platform tool suite</h3>
         <p>A Project Management Tool and an Engagement Feedback Tool, built and rolled out to ~200 internal users. I ran delivery and UAT for both.</p>
         <div class="tags"><span class="tag">Power Platform</span><span class="tag">UAT</span></div>
-      </div>
+      </a>
 
       <div class="work-card">
         <span class="work-card-meta">KPMG · Telecom engagement</span>
@@ -542,12 +236,12 @@
         <div class="tags"><span class="tag">Power BI</span><span class="tag">SQL</span></div>
       </div>
 
-      <div class="work-card">
+      <a class="work-card" href="work/quadcopter-drones/">
         <span class="work-card-meta">B.Tech major project</span>
         <h3>Quadcopter drones</h3>
         <p>Designed, fabricated and flew two quadcopters on Arduino Uno and Mega flight controllers, running open-source firmware.</p>
         <div class="tags"><span class="tag">Arduino</span><span class="tag">Embedded</span></div>
-      </div>
+      </a>
 
       <div class="work-card">
         <span class="work-card-meta">KPMG · Team of 3</span>
@@ -563,7 +257,7 @@
         <div class="work-building-label">Currently building</div>
         <p>A retrieval-augmented agent project, as part of an active AI engineering sprint. It'll be published here — with the repo — when it ships.</p>
       </div>
-      <a class="follow-btn" href="https://github.com/Pratzy101" target="_blank" rel="noopener">Follow on GitHub →</a>
+      <a class="follow-btn" href="log.html">Read the build log →</a>
     </div>
 
     <!-- ========================================================================
@@ -760,102 +454,22 @@
 <!-- ============================================================================
      JAVASCRIPT MODULES
      ============================================================================ -->
+<script src="assets/site.js" defer></script>
+
+<!-- ============================================================================
+     PAGE-SPECIFIC JAVASCRIPT
+     Only the two modules that can never run anywhere but the homepage live
+     here. Everything shared sits in assets/site.js above.
+     ============================================================================ -->
 <script>
   /* ========================================================================
-     MODULE START: CURSOR
-     Restored in V1.2 (see CSS comment above). Same scroll + idle-timeout fix
-     from V1.1: a scroll event clears the dot immediately, and a 600ms idle
-     timer clears it as backup if the pointer simply stops moving.
-     ======================================================================== */
-  (function cursorModule(){
-    const cursor = document.getElementById('cursor');
-    let idleTimer = null;
-
-    function activate(x, y){
-      cursor.classList.add('active');
-      cursor.style.left = x + 'px';
-      cursor.style.top = y + 'px';
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => cursor.classList.remove('active'), 600);
-    }
-
-    window.addEventListener('pointermove', e => activate(e.clientX, e.clientY));
-    window.addEventListener('pointerdown', e => activate(e.clientX, e.clientY));
-
-    window.addEventListener('scroll', () => {
-      clearTimeout(idleTimer);
-      cursor.classList.remove('active');
-    }, { passive: true });
-
-    document.querySelectorAll('a, button, .work-card, .work-flagship').forEach(el => {
-      el.addEventListener('pointerenter', () => cursor.classList.add('grow'));
-      el.addEventListener('pointerleave', () => cursor.classList.remove('grow'));
-    });
-  })();
-  /* ========================================================================
-     MODULE END: CURSOR
-     ======================================================================== */
-
-  /* ========================================================================
-     MODULE START: MAGNETIC BUTTONS
-     Desktop only: buttons follow the mouse slightly.
-     ======================================================================== */
-  (function magneticButtonsModule(){
-    if(!window.matchMedia('(hover: hover)').matches) return;
-    document.querySelectorAll('.btn, .ccard, .email-card').forEach(btn => {
-      btn.addEventListener('mousemove', e => {
-        const r = btn.getBoundingClientRect();
-        const x = e.clientX - r.left - r.width/2;
-        const y = e.clientY - r.top - r.height/2;
-        btn.style.transform = `translate(${x*0.1}px, ${y*0.14}px)`;
-      });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
-    });
-  })();
-  /* ========================================================================
-     MODULE END: MAGNETIC BUTTONS
-     ======================================================================== */
-
-  /* ========================================================================
-     MODULE START: MOBILE MENU
-     Restored in V1.2 (see CSS comment above).
-     ======================================================================== */
-  (function mobileMenuModule(){
-    const mobToggle = document.getElementById('mobToggle');
-    const mobMenu = document.getElementById('mobMenu');
-
-    function setOpen(open){
-      mobMenu.classList.toggle('open', open);
-      mobToggle.setAttribute('aria-expanded', String(open));
-      mobToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
-    }
-
-    mobToggle.addEventListener('click', () => setOpen(!mobMenu.classList.contains('open')));
-    mobMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
-  })();
-  /* ========================================================================
-     MODULE END: MOBILE MENU
-     ======================================================================== */
-
-  /* ========================================================================
-     MODULE START: SCROLL REVEAL
-     ======================================================================== */
-  (function scrollRevealModule(){
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in-view'); io.unobserve(e.target); } });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-  })();
-  /* ========================================================================
-     MODULE END: SCROLL REVEAL
-     ======================================================================== */
-
-  /* ========================================================================
      MODULE START: ACTIVE NAV LINK
+     Homepage only — the corner nav points at sections on this page.
      ======================================================================== */
   (function activeNavModule(){
     const sections = document.querySelectorAll('section[id]');
-    const navA = document.querySelectorAll('.corner-tr a');
+    const navA = document.querySelectorAll('.corner-tr a[href^="#"]');
+    if(!sections.length || !navA.length) return;
     const navObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if(entry.isIntersecting){
@@ -871,14 +485,15 @@
 
   /* ========================================================================
      MODULE START: GITHUB ACTIVITY
-     Carried forward from V1.1. No API key needed — public, unauthenticated,
-     CORS-enabled endpoint. Each visitor's browser calls it from their own
-     IP, so there's no shared rate limit. Fails gracefully to a profile link.
+     Homepage only. No API key needed — public, unauthenticated, CORS-enabled
+     endpoint. Each visitor's browser calls it from their own IP, so there is
+     no shared rate limit. Fails gracefully to a profile link.
      ======================================================================== */
   (function githubActivityModule(){
     const GITHUB_USERNAME = 'Pratzy101';
     const MAX_ITEMS = 5;
     const listEl = document.getElementById('ghList');
+    if(!listEl) return;
 
     function relativeTime(isoString){
       const diffMs = Date.now() - new Date(isoString).getTime();
@@ -941,6 +556,18 @@
      MODULE END: GITHUB ACTIVITY
      ======================================================================== */
 </script>
+
+<!-- ============================================================================
+     CLOUDFLARE WEB ANALYTICS (new in V1.3)
+     Cookie-free and privacy-preserving: no cross-site tracking, nothing stored
+     on the visitor's device, so no consent banner is required.
+
+     >>> Swap the placeholder token below for the real one from the
+     Cloudflare dashboard. Until you do, the beacon loads and silently does nothing —
+     it does not break the page.
+     ============================================================================ -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
+        data-cf-beacon='{"token": "d493bfedbdd84c4985286b6f5f728c3f"}'></script>
 
 </body>
 </html>
