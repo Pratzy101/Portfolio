@@ -1,0 +1,23 @@
+# Web framework
+fastapi==0.115.0
+
+# ASGI server that actually runs the FastAPI app
+uvicorn[standard]==0.30.6
+
+# Data validation + settings management
+pydantic==2.9.2
+pydantic-settings==2.5.2
+email-validator==2.2.0
+
+# Database ORM
+SQLAlchemy==2.0.35
+
+# Loads variables from the .env file
+python-dotenv==1.0.1
+
+# Makes the outbound HTTP call to the email provider
+httpx==0.27.2
+
+# PostgreSQL driver — only needed if you switch from SQLite to Postgres later.
+# Safe to leave installed; it does nothing while DATABASE_URL points at SQLite.
+psycopg2-binary==2.9.9
