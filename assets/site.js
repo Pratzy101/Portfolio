@@ -15,6 +15,49 @@
    ============================================================================ */
 
 /* ========================================================================
+   MODULE START: THEME TOGGLE
+   New in V1.4. Dark is the default; light is stored under the "theme" key
+   and survives navigation.
+
+   The theme is actually applied by a small inline script in each page's
+   <head> — it has to run before first paint or the dark default renders for
+   a frame and flashes. That script only sets the attribute. This module owns
+   the button's label, icon, and persistence, so the two can never disagree:
+   it reads the attribute the head script left behind rather than reading
+   localStorage a second time.
+
+   The 404 page carries the head script but no button, so this bails there.
+   ======================================================================== */
+(function themeToggleModule(){
+  const btn = document.getElementById('themeToggle');
+  if(!btn) return;
+  const root = document.documentElement;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const icon = btn.querySelector('.theme-icon');
+
+  function apply(theme){
+    const light = theme === 'light';
+    if(light) root.dataset.theme = 'light'; else delete root.dataset.theme;
+    btn.setAttribute('aria-pressed', String(light));
+    btn.setAttribute('aria-label', light ? 'Switch to dark theme' : 'Switch to light theme');
+    if(icon) icon.textContent = light ? '☀' : '☾';
+    if(meta) meta.content = light ? '#faf9f7' : '#0a0a0a';
+    /* Safari in private mode throws on write, not on read. Failing to persist
+       is survivable — the toggle still works for the current page. */
+    try{ localStorage.setItem('theme', theme); }catch(e){}
+  }
+
+  apply(root.dataset.theme === 'light' ? 'light' : 'dark');
+
+  btn.addEventListener('click', () => {
+    apply(root.dataset.theme === 'light' ? 'dark' : 'light');
+  });
+})();
+/* ========================================================================
+   MODULE END: THEME TOGGLE
+   ======================================================================== */
+
+/* ========================================================================
    MODULE START: CURSOR
    Same scroll + idle-timeout fix from V1.1: a scroll event clears the dot
    immediately, and a 600ms idle timer clears it as backup if the pointer

@@ -7,6 +7,16 @@
    drift from the design tool rather than deliberate distinct tones — they're
    consolidated into single tokens here (--text-dim, --surface-raised) for
    maintainability. The visual difference is under 3%, imperceptible in practice.
+
+   V1.4 theming note: dark is the default and lives here in :root. Light is
+   opt-in — the toggle sets data-theme="light" on <html> and the block below
+   overrides the same names. Nothing else in this file knows a theme exists;
+   every rule reads a token, so both palettes come from one set of rules.
+
+   --contrast (was --white in V1.3) is not a colour, it is "maximum contrast
+   against the background": the focus ring, the skip link, the primary button
+   fill, every hover state. It goes near-black in light mode, so the old name
+   would have been actively wrong.
    ============================================================================ */
 :root{
   --bg:#0a0a0a;
@@ -20,8 +30,40 @@
   --text-dim:#a8a8a8;
   --text-faint:#6e6e6e;
   --text-marquee:#7d7d7d;
-  --white:#ffffff;
+  --contrast:#ffffff;
+  --grid-line:rgba(255,255,255,0.026);
+  --shadow-card:none;
   --maxw:920px;
+}
+
+/* The light greys are hand-picked, not a lightness-flip of the dark ones.
+   Inverting #a8a8a8 lands around 3:1 on an off-white background, which fails
+   AA for body text — and --text-dim carries most of the prose on this site
+   (.section-lead, .xrow ul, .case-body p). These are measured instead:
+   --text-dim ~6.5:1, --text-faint ~4.6:1.
+
+   The background is warm off-white rather than #ffffff so the surfaces above
+   it (--surface, --surface-raised) still have somewhere to sit. On pure white
+   a raised card can only go darker, which reads inverted. */
+:root[data-theme="light"]{
+  --bg:#faf9f7;
+  --surface:#f1f0ec;
+  --surface-2:#e8e7e2;
+  --surface-raised:#f5f4f1;
+  --border:#d6d4ce;
+  --border-soft:#e6e4de;
+  --text:#16150f;
+  --text-soft:#3d3b35;
+  --text-dim:#5a584f;
+  /* Measured against --surface-raised, not --bg: --text-faint's worst case is
+     .diagram-caption sitting on a raised panel, which is the lightest surface
+     it ever lands on. Tuned against --bg alone it passes there and quietly
+     fails by a tenth on the panel. */
+  --text-faint:#6e6b63;
+  --text-marquee:#6f6c64;
+  --contrast:#0a0a0a;
+  --grid-line:rgba(0,0,0,0.045);
+  --shadow-card:0 1px 2px rgba(0,0,0,0.04);
 }
 
 /* ============================================================================
@@ -37,14 +79,14 @@ body{
   html{ scroll-behavior:auto; }
 }
 
-::selection{ background:var(--white); color:var(--bg); }
+::selection{ background:var(--contrast); color:var(--bg); }
 h1,h2,h3{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
 .mono{ font-family:'JetBrains Mono', monospace; }
 a{ color:inherit; text-decoration:none; }
 ul{ list-style:none; }
 .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 28px; }
 
-:focus-visible{ outline:2px solid var(--white); outline-offset:3px; }
+:focus-visible{ outline:2px solid var(--contrast); outline-offset:3px; }
 
 .sr-only{
   position:absolute; width:1px; height:1px; padding:0; margin:-1px;
@@ -58,7 +100,7 @@ ul{ list-style:none; }
    ============================================================================ */
 .skip-link{
   position:absolute; top:8px; left:8px; z-index:9999;
-  padding:10px 16px; background:var(--white); color:var(--bg);
+  padding:10px 16px; background:var(--contrast); color:var(--bg);
   border-radius:6px; font-family:'JetBrains Mono', monospace; font-size:13px;
   transform:translateY(-200%); transition:transform .2s ease;
 }
@@ -70,8 +112,8 @@ ul{ list-style:none; }
 .grid-bg{
   position:fixed; inset:0; z-index:-1; pointer-events:none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size:48px 48px;
   -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
   mask-image:radial-gradient(ellipse 80% 55% at 50% 0%, black 0%, transparent 70%);
@@ -82,15 +124,27 @@ ul{ list-style:none; }
    Restored in V1.2 — the uploaded design had no cursor code at all, and
    no JS of any kind. Same fixed-in-V1.1 behaviour: scroll clears it
    immediately, plus a 600ms idle timeout as backup.
+
+   V1.4 — THIS IS THE ONE PLACE THAT MUST NOT USE --contrast. White here is
+   deliberate and theme-independent, because mix-blend-mode:difference is
+   already doing the theming: difference against pure white *is* inversion,
+   so the same white gives a dark cursor on a light page and a light cursor
+   on a dark one, with no token involved.
+
+   Swapping in --contrast breaks the grow state specifically. In light mode
+   it becomes a solid near-black 52px disc, and difference against near-black
+   is close to a no-op, so the disc paints over whatever it is hovering and
+   the nav links vanish underneath it. With white, the circle inverts the
+   text under it instead — the intended effect, legible in both themes.
    ============================================================================ */
 #cursor{
   position:fixed; top:0; left:0; width:16px; height:16px; border-radius:50%;
-  border:1px solid var(--white); pointer-events:none; z-index:9999; opacity:0;
+  border:1px solid #fff; pointer-events:none; z-index:9999; opacity:0;
   transform:translate(-50%,-50%); transition:width .2s ease, height .2s ease, background .2s ease, opacity .2s ease;
   mix-blend-mode:difference;
 }
 #cursor.active{ opacity:1; }
-#cursor.grow{ width:52px; height:52px; background:var(--white); }
+#cursor.grow{ width:52px; height:52px; background:#fff; }
 
 /* ============================================================================
    FIXED CORNER CHROME
@@ -107,13 +161,36 @@ ul{ list-style:none; }
 .corner-tl .brand{ font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:14px; color:var(--text); letter-spacing:0; text-transform:uppercase; }
 .corner-tr{ top:28px; right:28px; display:flex; gap:26px; }
 .corner-tr a{ text-transform:uppercase; position:relative; padding-bottom:3px; transition:color .2s ease; }
-.corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--white); transition:width .25s ease; }
-.corner-tr a:hover{ color:var(--white); }
+.corner-tr a::after{ content:''; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--contrast); transition:width .25s ease; }
+.corner-tr a:hover{ color:var(--contrast); }
 .corner-tr a:hover::after{ width:100%; }
+/* ============================================================================
+   THEME TOGGLE (new in V1.4)
+   Lives as the last child of .corner-tr so it reads as part of the nav row
+   rather than as a fifth piece of floating chrome. It needs its own rule
+   because every style in .corner-tr above is scoped to `a`, and a <button>
+   also arrives with a UA font and background that have to be cleared.
+   ============================================================================ */
+.theme-toggle{
+  position:relative;
+  background:none; border:none; padding:0 0 3px; cursor:none;
+  font-family:'JetBrains Mono', monospace; font-size:13px; line-height:1;
+  color:var(--text-dim); transition:color .2s ease;
+}
+.theme-toggle:hover{ color:var(--contrast); }
+.theme-icon{ display:block; }
+
+/* The glyph's own box is under 8px wide — the button lines up with the nav
+   links to the pixel, but it is a fiddly thing to hit. This expands the click
+   target to roughly 28x37 without changing layout, so the alignment survives.
+   Switched off below 900px, where the button is already a 44px square and an
+   overhanging target would start stealing taps from the menu button. */
+.theme-toggle::before{ content:''; position:absolute; inset:-8px -10px; }
+
 .corner-bl{ bottom:28px; left:28px; text-transform:uppercase; line-height:1.6; }
 .corner-br{ bottom:28px; right:28px; display:flex; gap:20px; text-transform:uppercase; }
 .corner-br a{ transition:color .2s ease; }
-.corner-br a:hover{ color:var(--white); }
+.corner-br a:hover{ color:var(--contrast); }
 
 /* ============================================================================
    MOBILE MENU
@@ -123,7 +200,23 @@ ul{ list-style:none; }
 .mob-toggle{ display:none; }
 .mob-menu{ display:none; }
 @media (max-width:900px){
-  .corner-tr{ display:none; }
+  /* V1.4: the nav row collapses into the menu, but the theme toggle stays —
+     it moves into the header bar just left of the hamburger. Hiding the links
+     rather than the whole container keeps the toggle a single DOM node instead
+     of a desktop copy plus a duplicate inside .mob-menu.
+     z-index matches .mob-toggle so the toggle is still reachable while the
+     full-screen menu (z-index 205) is open. */
+  .corner-tr{ display:flex; top:8px; right:60px; z-index:210; }
+  .corner-tr a{ display:none; }
+
+  /* The glyph is barely 8px wide — fine for a pointer, not for a thumb. The
+     button is padded out to a 44px square so the tap target matches the
+     guideline while the icon itself stays the same size. */
+  .theme-toggle{
+    display:flex; align-items:center; justify-content:center;
+    width:44px; height:44px; padding:0; font-size:15px;
+  }
+  .theme-toggle::before{ content:none; }
   .mob-toggle{
     display:block; position:fixed; top:26px; right:24px; z-index:210;
     background:none; border:1px solid var(--border); border-radius:6px;
@@ -211,9 +304,9 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
    Shared across hero, work, and follow CTAs.
    ============================================================================ */
 .btn{ font-family:'JetBrains Mono', monospace; font-size:13px; padding:14px 24px; border-radius:6px; border:1px solid var(--border); display:inline-flex; align-items:center; gap:8px; transition:all .2s ease; }
-.btn-primary{ background:var(--white); color:var(--bg); border-color:var(--white); }
-.btn-primary:hover{ background:transparent; color:var(--white); }
-.btn-ghost{ color:#e2e2e2; }
+.btn-primary{ background:var(--contrast); color:var(--bg); border-color:var(--contrast); }
+.btn-primary:hover{ background:transparent; color:var(--contrast); }
+.btn-ghost{ color:var(--text-soft); }
 .btn-ghost:hover{ border-color:var(--text-dim); }
 
 /* ============================================================================
@@ -223,7 +316,7 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
    ============================================================================ */
 #home{ min-height:100vh; display:flex; flex-direction:column; justify-content:center; padding:100px 0 110px; border-bottom:1px solid var(--border-soft); }
 .status-line{ display:inline-flex; align-items:center; gap:8px; font-family:'JetBrains Mono', monospace; font-size:12.5px; color:var(--text-dim); border:1px solid var(--border); padding:6px 12px; border-radius:100px; margin-bottom:32px; width:fit-content; }
-.status-dot{ width:6px; height:6px; border-radius:50%; background:#eaeaea; animation:pulse 2s infinite; }
+.status-dot{ width:6px; height:6px; border-radius:50%; background:var(--text); animation:pulse 2s infinite; }
 @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
 .hero-name{ font-family:'JetBrains Mono', monospace; font-size:14px; letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:18px; }
 .hero-head{ font-size:clamp(44px,8.6vw,108px); font-weight:600; line-height:0.98; margin-bottom:28px; }
@@ -270,8 +363,8 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
 @media (max-width:640px){ .flagship-breakdown{ grid-template-columns:1fr; gap:16px; } }
 .flagship-breakdown h4{ font-family:'JetBrains Mono', monospace; font-size:10.5px; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-dim); margin-bottom:6px; }
 .flagship-breakdown p{ color:var(--text-soft); font-size:14.5px; }
-.work-link{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border-bottom:1px solid #3a3a3a; padding-bottom:3px; width:fit-content; margin-top:8px; transition:border-color .2s ease; }
-.work-link:hover{ border-bottom-color:var(--white); }
+.work-link{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--text); border-bottom:1px solid var(--border); padding-bottom:3px; width:fit-content; margin-top:8px; transition:border-color .2s ease; }
+.work-link:hover{ border-bottom-color:var(--contrast); }
 
 .work-card{ background:var(--bg); padding:32px; display:flex; flex-direction:column; gap:14px; min-height:230px; }
 .work-card-meta{ font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim); }
@@ -304,12 +397,12 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
 }
 .gh-row:first-child{ border-top:none; }
 .gh-repo{ color:var(--text); font-family:'JetBrains Mono', monospace; font-size:12.5px; }
-.gh-repo a:hover{ color:var(--white); text-decoration:underline; }
+.gh-repo a:hover{ color:var(--contrast); text-decoration:underline; }
 .gh-msg{ color:var(--text-dim); flex-grow:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .gh-time{ color:var(--text-faint); font-family:'JetBrains Mono', monospace; font-size:11.5px; flex-shrink:0; }
 .gh-fallback{ color:var(--text-faint); font-size:13.5px; }
 .gh-fallback a{ text-decoration:underline; color:var(--text-dim); }
-.gh-fallback a:hover{ color:var(--white); }
+.gh-fallback a:hover{ color:var(--contrast); }
 @media (max-width:640px){
   .gh-row{ flex-direction:column; gap:4px; }
   .gh-msg{ white-space:normal; }
@@ -359,7 +452,8 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
 .email-card{
   display:flex; align-items:center; justify-content:space-between; gap:20px;
   background:var(--surface); border:1px solid var(--border); border-radius:10px;
-  padding:26px 28px; margin-bottom:14px; transition:border-color .2s ease, background .2s ease;
+  padding:26px 28px; margin-bottom:14px; box-shadow:var(--shadow-card);
+  transition:border-color .2s ease, background .2s ease;
 }
 .email-card:hover{ border-color:var(--text-dim); background:var(--surface-2); }
 .email-card-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px; }
@@ -394,7 +488,7 @@ h2.section-title{ font-size:clamp(28px,4.4vw,40px); font-weight:600; margin-bott
 
 .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 @media (max-width:640px){ .contact-grid{ grid-template-columns:1fr; } }
-.ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; transition:border-color .2s ease, background .2s ease; }
+.ccard{ display:flex; align-items:center; justify-content:space-between; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px 22px; box-shadow:var(--shadow-card); transition:border-color .2s ease, background .2s ease; }
 .ccard:hover{ border-color:var(--text-dim); background:var(--surface-2); }
 .ccard-label{ font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:4px; }
 .ccard-value{ font-size:14.5px; }
@@ -419,7 +513,7 @@ a.work-card::after{
 }
 a.work-card:hover{ background:var(--surface-raised); }
 a.work-card:hover::after{ opacity:1; transform:translate(0,0); }
-a.work-card:hover h3{ color:var(--white); }
+a.work-card:hover h3{ color:var(--contrast); }
 
 /* ============================================================================
    SUBPAGE SHELL (new in V1.3)
@@ -434,7 +528,7 @@ a.work-card:hover h3{ color:var(--white); }
   text-transform:uppercase; color:var(--text-dim); display:inline-flex; gap:8px;
   align-items:center; margin-bottom:40px; transition:color .2s ease;
 }
-.back-link:hover{ color:var(--white); }
+.back-link:hover{ color:var(--contrast); }
 
 .page-head{ padding-bottom:8px; }
 .page-title{ font-size:clamp(32px,5.6vw,56px); font-weight:600; line-height:1.04; margin-bottom:20px; }

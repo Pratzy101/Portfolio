@@ -25,6 +25,19 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/site.css">
+
+<!-- Applies a stored light-mode choice before first paint, so navigating here
+     from the homepage never flashes dark. Must stay inline and synchronous —
+     see the fuller note in index.html. -->
+<meta name="theme-color" content="#0a0a0a">
+<script>
+  try{
+    if(localStorage.getItem('theme') === 'light'){
+      document.documentElement.dataset.theme = 'light';
+      document.querySelector('meta[name="theme-color"]').content = '#faf9f7';
+    }
+  }catch(e){}
+</script>
 </head>
 <body>
 
@@ -44,6 +57,10 @@
   <a href="../../index.html#experience">Experience</a>
   <a href="../../index.html#about">About</a>
   <a href="../../index.html#contact">Contact</a>
+  <button class="theme-toggle" id="themeToggle" type="button"
+          aria-pressed="false" aria-label="Switch to light theme">
+    <span class="theme-icon" aria-hidden="true">☾</span>
+  </button>
 </nav>
 <div class="corner corner-bl">NOIDA, INDIA<br>IST</div>
 <div class="corner corner-br">

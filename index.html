@@ -67,6 +67,30 @@
 </script>
 
 <link rel="stylesheet" href="assets/site.css">
+
+<!-- ============================================================================
+     THEME (new in V1.4)
+     Applies a stored light-mode choice before the first paint. Inline and
+     synchronous on purpose: an external or deferred script would let the dark
+     default render for a frame first, which reads as a flash on every load.
+
+     Dark is the default, so only "light" is acted on — there is nothing to do
+     for a first-time visitor. The try/catch is not decorative: reading
+     localStorage throws outright in Safari private mode, and an uncaught
+     throw here would take out the rest of the head.
+
+     The button that drives this lives in the nav row; its label, icon and
+     persistence are handled by the THEME TOGGLE module in assets/site.js.
+     ============================================================================ -->
+<meta name="theme-color" content="#0a0a0a">
+<script>
+  try{
+    if(localStorage.getItem('theme') === 'light'){
+      document.documentElement.dataset.theme = 'light';
+      document.querySelector('meta[name="theme-color"]').content = '#faf9f7';
+    }
+  }catch(e){}
+</script>
 </head>
 <body>
 
@@ -86,6 +110,12 @@
   <a href="#experience">Experience</a>
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
+  <!-- Icon is aria-hidden: the button's aria-label already carries the meaning,
+       and both are kept in sync by the THEME TOGGLE module in site.js. -->
+  <button class="theme-toggle" id="themeToggle" type="button"
+          aria-pressed="false" aria-label="Switch to light theme">
+    <span class="theme-icon" aria-hidden="true">☾</span>
+  </button>
 </nav>
 <div class="corner corner-bl">NOIDA, INDIA<br>IST</div>
 <div class="corner corner-br">

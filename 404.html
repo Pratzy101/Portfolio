@@ -9,9 +9,21 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+  /* This page is self-contained — it deliberately does not load site.css, so
+     it needs its own copy of the tokens it uses. The light values match
+     assets/site.css exactly; the dark greys here are slightly different and
+     always have been, which is invisible because no other page sits beside
+     this one.
+
+     There is no toggle here (the page has no nav chrome); it simply honours a
+     choice already made elsewhere on the site. */
   :root{
     --bg:#0a0a0a; --text:#f4f4f2; --text-dim:#8f8f8f; --text-faint:#565656;
-    --border:#272727; --white:#ffffff;
+    --border:#272727; --contrast:#ffffff; --grid-line:rgba(255,255,255,0.026);
+  }
+  :root[data-theme="light"]{
+    --bg:#faf9f7; --text:#16150f; --text-dim:#5a584f; --text-faint:#6e6b63;
+    --border:#d6d4ce; --contrast:#0a0a0a; --grid-line:rgba(0,0,0,0.045);
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   body{
@@ -22,8 +34,8 @@
   .grid-bg{
     position:fixed; inset:0; z-index:-1; pointer-events:none;
     background-image:
-      linear-gradient(rgba(255,255,255,0.026) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.026) 1px, transparent 1px);
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size:48px 48px;
     -webkit-mask-image:radial-gradient(ellipse 80% 55% at 50% 50%, black 0%, transparent 70%);
     mask-image:radial-gradient(ellipse 80% 55% at 50% 50%, black 0%, transparent 70%);
@@ -39,11 +51,23 @@
   p{ color:var(--text-dim); max-width:420px; margin-bottom:36px; font-size:15.5px; }
   .btn{
     font-family:'JetBrains Mono', monospace; font-size:13px; padding:13px 24px;
-    border-radius:6px; border:1px solid var(--white); background:var(--white); color:var(--bg);
+    border-radius:6px; border:1px solid var(--contrast); background:var(--contrast); color:var(--bg);
     display:inline-flex; align-items:center; gap:8px; text-decoration:none; transition:all .2s ease;
   }
-  .btn:hover{ background:transparent; color:var(--white); }
+  .btn:hover{ background:transparent; color:var(--contrast); }
 </style>
+
+<!-- Applies a stored light-mode choice before first paint. Must stay inline and
+     synchronous — see the fuller note in index.html. -->
+<meta name="theme-color" content="#0a0a0a">
+<script>
+  try{
+    if(localStorage.getItem('theme') === 'light'){
+      document.documentElement.dataset.theme = 'light';
+      document.querySelector('meta[name="theme-color"]').content = '#faf9f7';
+    }
+  }catch(e){}
+</script>
 </head>
 <body>
   <div class="grid-bg" aria-hidden="true"></div>
