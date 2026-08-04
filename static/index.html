@@ -468,6 +468,43 @@
         <span class="arrow" aria-hidden="true">→</span>
       </a>
     </div>
+    <!-- ========================================================================
+         SUBMODULE: CONTACT FORM (new in V1.4)
+         Posts to /api/contact on the same origin. The email card and social
+         links above stay — if JS fails or the API is down, there is still a
+         way to reach me.
+         ======================================================================== -->
+    <form id="contact-form" class="contact-form reveal" novalidate>
+      <div class="cf-field">
+        <label for="cf-name">Name</label>
+        <input id="cf-name" name="name" type="text" required
+               minlength="2" maxlength="100" autocomplete="name">
+      </div>
+
+      <div class="cf-field">
+        <label for="cf-email">Email</label>
+        <input id="cf-email" name="email" type="email" required
+               maxlength="255" autocomplete="email">
+      </div>
+
+      <div class="cf-field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required
+                  minlength="10" maxlength="5000"
+                  placeholder="What are you working on?"></textarea>
+      </div>
+
+      <!-- Hidden from humans by CSS, from screen readers by aria-hidden,
+           from keyboards by tabindex. Only bots fill this in. -->
+      <div class="cf-hp" aria-hidden="true">
+        <label for="cf-website">Website</label>
+        <input id="cf-website" name="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Send message</button>
+
+      <p id="cf-status" class="cf-status" role="status" aria-live="polite"></p>
+    </form>
     <p class="contact-alt reveal">Alt: shaandilyaprathit@icloud.com</p>
   </div>
 </section>

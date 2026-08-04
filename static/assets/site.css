@@ -34,6 +34,8 @@
   --grid-line:rgba(255,255,255,0.026);
   --shadow-card:none;
   --maxw:920px;
+  --error:#e0796d;
+  --success:#8fbf9f;
 }
 
 /* The light greys are hand-picked, not a lightness-flip of the dark ones.
@@ -706,3 +708,57 @@ a.work-card:hover h3{ color:var(--contrast); }
   font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:0.1em;
   text-transform:uppercase; color:var(--text-faint); display:block; margin-bottom:4px;
 }
+
+/* ============================================================================
+   CONTACT FORM (new in V1.4)
+   The section previously offered only a mailto: link. This posts to the
+   FastAPI backend at /api/contact.
+
+   Inherits the existing tokens throughout — the form should read as part of
+   the same system as .email-card and .ccard above it, not as a bolted-on
+   widget.
+   ============================================================================ */
+.contact-form{ display:grid; gap:20px; max-width:520px; margin-top:36px; }
+
+.cf-field{ display:grid; gap:7px; }
+.cf-field label{
+  font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.08em;
+  text-transform:uppercase; color:var(--text-dim);
+}
+.cf-field input,
+.cf-field textarea{
+  font-family:'Inter', system-ui, sans-serif;
+  /* 16px minimum, or iOS Safari zooms the viewport on focus. */
+  font-size:max(16px, 15px);
+  color:var(--text); background:var(--surface);
+  border:1px solid var(--border); border-radius:6px;
+  padding:13px 14px; width:100%;
+  transition:border-color .2s ease, background .2s ease;
+}
+.cf-field textarea{ resize:vertical; min-height:130px; line-height:1.6; }
+.cf-field input:hover,
+.cf-field textarea:hover{ border-color:var(--text-faint); }
+.cf-field input:focus,
+.cf-field textarea:focus{ outline:none; border-color:var(--text-dim); background:var(--surface-2); }
+.cf-field input::placeholder,
+.cf-field textarea::placeholder{ color:var(--text-faint); }
+
+.cf-field.has-error input,
+.cf-field.has-error textarea{ border-color:var(--error); }
+.cf-error{
+  font-family:'JetBrains Mono', monospace; font-size:11px;
+  letter-spacing:0.04em; color:var(--error);
+}
+
+/* Honeypot. Off-screen rather than display:none — some bots skip anything
+   explicitly hidden, but fill anything they can find in the DOM. */
+.cf-hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+.contact-form .btn-primary:disabled{ opacity:.45; cursor:wait; }
+
+.cf-status{
+  font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.04em;
+  min-height:1.4em; color:var(--text-dim);
+}
+.cf-status.is-success{ color:var(--success); }
+.cf-status.is-error{ color:var(--error); }

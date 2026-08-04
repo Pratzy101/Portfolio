@@ -166,3 +166,108 @@
 /* ========================================================================
    MODULE END: SCROLL REVEAL
    ======================================================================== */
+
+/* ========================================================================
+   MODULE START: CONTACT FORM (new in V1.4)
+   Posts to the FastAPI backend. Bails early on every page that has no form,
+   consistent with the guards added in V1.3.
+   ======================================================================== */
+(function contactFormModule(){
+  const form = document.getElementById('contact-form');
+  if(!form) return;
+
+  const statusEl = document.getElementById('cf-status');
+  const button = form.querySelector('button[type="submit"]');
+
+  /* Relative URL: identical on localhost and in production, because the API
+     and the site are served from the same origin. */
+  const ENDPOINT = '/api/contact';
+
+  function setStatus(text, kind){
+    statusEl.textContent = text;
+    statusEl.className = 'cf-status' + (kind ? ' is-' + kind : '');
+  }
+
+  function clearErrors(){
+    form.querySelectorAll('.cf-field.has-error').forEach(f => {
+      f.classList.remove('has-error');
+      const msg = f.querySelector('.cf-error');
+      if(msg) msg.remove();
+    });
+  }
+
+  function showError(fieldName, text){
+    const input = form.querySelector('[name="' + fieldName + '"]');
+    const field = input && input.closest('.cf-field');
+    if(!field) return;
+    field.classList.add('has-error');
+    const msg = document.createElement('p');
+    msg.className = 'cf-error';
+    msg.textContent = text;
+    field.appendChild(msg);
+  }
+
+  form.addEventListener('submit', async (event) => {
+    /* Without this the browser does a full page reload and the fetch never
+       completes. */
+    event.preventDefault();
+    clearErrors();
+
+    /* The browser's own validation first — instant, and saves a pointless
+       round trip. The server validates the same rules again regardless;
+       this is a convenience, never a security control. */
+    if(!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+
+    const payload = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      message: form.message.value.trim(),
+      website: form.website.value
+    };
+
+    button.disabled = true;
+    setStatus('Sending…', null);
+
+    try{
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      /* 422 is FastAPI's validation rejection. detail is a list; each entry
+         has loc (which field) and msg (why). */
+      if(response.status === 422){
+        const problem = await response.json();
+        (problem.detail || []).forEach(d => {
+          const field = d.loc && d.loc[d.loc.length - 1];
+          if(field) showError(field, d.msg);
+        });
+        setStatus('Check the highlighted fields.', 'error');
+        return;
+      }
+
+      if(!response.ok) throw new Error('Server returned ' + response.status);
+
+      const data = await response.json();
+
+      if(data.status === 'received'){
+        form.reset();
+        setStatus(data.message, 'success');
+      } else {
+        setStatus(data.message, 'error');
+      }
+    } catch(err){
+      console.error(err);
+      setStatus("Couldn't send that — email shaandilyaprathit@gmail.com instead.", 'error');
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+/* ========================================================================
+   MODULE END: CONTACT FORM
+   ======================================================================== */
