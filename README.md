@@ -3,7 +3,7 @@
 Personal portfolio site, rebuilt from a static GitHub Pages deployment into a
 running web application with a Python backend.
 
-**Live:** _(add URL after first deploy)_
+**Live:** https://portfolio-2azl.onrender.com
 
 ---
 
