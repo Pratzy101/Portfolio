@@ -762,3 +762,9 @@ a.work-card:hover h3{ color:var(--contrast); }
 }
 .cf-status.is-success{ color:var(--success); }
 .cf-status.is-error{ color:var(--error); }
+
+/* V1.4 — the activity feed shows branch names now, not repo names. Dimmer
+   than the old repo treatment: the commit message is the content here, the
+   branch is context. */
+.gh-repo{ color:var(--text-dim); }
+.gh-repo a:hover{ color:var(--white); }

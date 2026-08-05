@@ -559,14 +559,24 @@
      MODULE END: ACTIVE NAV LINK
      ======================================================================== */
 
-  /* ========================================================================
+/* ========================================================================
      MODULE START: GITHUB ACTIVITY
-     Homepage only. No API key needed — public, unauthenticated, CORS-enabled
-     endpoint. Each visitor's browser calls it from their own IP, so there is
-     no shared rate limit. Fails gracefully to a profile link.
+     Homepage only. Reads real commits from the repo rather than the generic
+     events stream, because the events payload often omits commit messages
+     and cannot be scoped to a branch.
+
+     Branch order is load-bearing: main is processed first, so commits shared
+     between branches are labelled main and only genuinely V1.4-specific work
+     carries the feature-branch label.
+
+     Public, unauthenticated, CORS-enabled. Each visitor calls from their own
+     IP, so the 60/hour limit is per-visitor, not shared. Fails to a profile
+     link.
      ======================================================================== */
   (function githubActivityModule(){
     const GITHUB_USERNAME = 'Pratzy101';
+    const REPO = 'Portfolio';
+    const BRANCHES = ['main', 'v1.4-webapp'];
     const MAX_ITEMS = 5;
     const listEl = document.getElementById('ghList');
     if(!listEl) return;
@@ -579,8 +589,7 @@
       if(hours < 24) return `${hours}h ago`;
       const days = Math.floor(hours / 24);
       if(days < 30) return `${days}d ago`;
-      const months = Math.floor(days / 30);
-      return `${months}mo ago`;
+      return `${Math.floor(days / 30)}mo ago`;
     }
 
     function escapeHtml(str){
@@ -593,39 +602,59 @@
       listEl.innerHTML = `<p class="gh-fallback">${message} See the full profile on <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" rel="noopener">GitHub</a>.</p>`;
     }
 
-    function render(pushEvents){
-      if(!pushEvents.length){
-        showFallback('No public activity in the last few weeks.');
-        return;
-      }
-      const rows = pushEvents.slice(0, MAX_ITEMS).map(evt => {
-        const repoName = evt.repo.name.replace(`${GITHUB_USERNAME}/`, '');
-        const repoUrl = `https://github.com/${evt.repo.name}`;
-        const commits = evt.payload && evt.payload.commits ? evt.payload.commits : [];
-        const message = commits.length ? commits[commits.length - 1].message.split('\n')[0] : 'Pushed changes';
-        return `
-          <div class="gh-row">
-            <span class="gh-repo"><a href="${repoUrl}" target="_blank" rel="noopener">${escapeHtml(repoName)}</a></span>
-            <span class="gh-msg">${escapeHtml(message)}</span>
-            <span class="gh-time">${relativeTime(evt.created_at)}</span>
-          </div>`;
-      }).join('');
-      listEl.innerHTML = rows;
+    function fetchBranch(branch){
+      const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO}/commits`
+                + `?sha=${encodeURIComponent(branch)}&per_page=${MAX_ITEMS}`;
+      return fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } })
+        .then(res => {
+          if(!res.ok) throw new Error(`${branch} responded ${res.status}`);
+          return res.json();
+        })
+        .then(commits => commits.map(c => ({
+          sha: c.sha,
+          branch: branch,
+          /* Commit messages can be multi-line; the subject is the first line. */
+          message: c.commit.message.split('\n')[0],
+          date: c.commit.author.date,
+          url: c.html_url
+        })));
     }
 
-    fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events/public`, {
-      headers: { 'Accept': 'application/vnd.github+json' }
-    })
-      .then(res => {
-        if(!res.ok) throw new Error(`GitHub API responded ${res.status}`);
-        return res.json();
-      })
-      .then(events => {
-        const pushEvents = events.filter(e => e.type === 'PushEvent');
-        render(pushEvents);
-      })
-      .catch(() => {
-        showFallback('Recent activity is temporarily unavailable.');
+    function render(commits){
+      if(!commits.length){
+        showFallback('No recent commits.');
+        return;
+      }
+      listEl.innerHTML = commits.map(c => `
+        <div class="gh-row">
+          <span class="gh-repo"><a href="${c.url}" target="_blank" rel="noopener">${escapeHtml(c.branch)}</a></span>
+          <span class="gh-msg">${escapeHtml(c.message)}</span>
+          <span class="gh-time">${relativeTime(c.date)}</span>
+        </div>`).join('');
+    }
+
+    /* allSettled, not all: if the feature branch is deleted after a merge,
+       that request 404s and the main branch should still render. */
+    Promise.allSettled(BRANCHES.map(fetchBranch))
+      .then(results => {
+        const seen = new Set();
+        const merged = [];
+        results.forEach(r => {
+          if(r.status !== 'fulfilled') return;
+          r.value.forEach(c => {
+            /* A commit reachable from both branches appears twice. First
+               occurrence wins, and main is processed first. */
+            if(seen.has(c.sha)) return;
+            seen.add(c.sha);
+            merged.push(c);
+          });
+        });
+        if(!merged.length){
+          showFallback('Recent activity is temporarily unavailable.');
+          return;
+        }
+        merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+        render(merged.slice(0, MAX_ITEMS));
       });
   })();
   /* ========================================================================
